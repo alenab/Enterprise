@@ -1,0 +1,69 @@
+<project name="module3-part2" basedir=".">
+
+    <property name="src" location="src"/>
+    <property name="output" location="out"/>
+    <property name="build" location="${output}/build"/>
+    <property name="jar" location="${output}/jar"/>
+    <property name="test.src" location="test"/>
+    <property name="test.build" location="${output}/test.build"/>
+    <property name="test.report" location="${output}/test.report"/>
+    <property name="lib" location="lib"/>
+
+    <path id="test.classpath">
+        <pathelement location="${lib}/hamcrest-core-1.3.jar"/>
+        <pathelement location="${lib}/junit-4.12.jar"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${output}"/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${jar}"/>
+        <mkdir dir="${test.build}"/>
+        <mkdir dir="${test.report}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${build}" source="1.8" target="1.8"/>
+    </target>
+
+    <target name="compile.test" depends="compile">
+        <javac srcdir="${test.src}" destdir="${test.build}" source="1.8" target="1.8">
+            <classpath>
+                <pathelement location="${build}"/>
+                <path refid="test.classpath"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="test" depends="compile.test">
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath>
+                <pathelement location="${test.build}"/>
+                <pathelement location="${build}"/>
+                <path refid="test.classpath"/>
+            </classpath>
+            <formatter type="xml"/>
+            <formatter type="plain"/>
+            <batchtest fork="yes" todir="${test.report}">
+                <fileset dir="${test.src}">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="jar" depends="test">
+        <jar destfile="${jar}/${ant.project.name}.jar">
+            <fileset dir="${build}"/>
+            <manifest>
+                <attribute name="Main-Class" value="SquareSumExecutor"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean">
+        <delete dir="${output}"/>
+    </target>
+
+
+</project>

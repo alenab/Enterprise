@@ -1,0 +1,30 @@
+<project name="module1" basedir=".">
+
+    <property name="src" location="src/main/java"/>
+    <property name="build" location="target/ant/compiled"/>
+    <property name="dist" location="target/ant/jar"/>
+
+    <target name="init">
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${src}" destdir="${build}" source="1.8" target="1.8"/>
+    </target>
+
+    <target name="jar" depends="compile">
+        <jar destfile="${dist}/${ant.project.name}.jar">
+            <fileset dir="${build}"/>
+            <manifest>
+                <attribute name="Main-Class" value="module1/Main"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="clean">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+</project>
