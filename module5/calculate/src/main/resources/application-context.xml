@@ -2,16 +2,20 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-                           https://www.springframework.org/schema/beans/spring-beans.xsd"
->
+                           https://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="application" class="ua.goit.calculate.Application">
         <property name="calculator" ref="calculator"/>
     </bean>
 
-    <bean id="calculator" class="ua.goit.calculator.Calculator" init-method="init">
+    <bean id="calculator" class="ua.goit.calculator.Calculator">
         <property name="operations">
             <list value-type="ua.goit.Operation">
+                <ref bean="longPlusOperation"/>
+                <ref bean="longMinusOperation"/>
+                <ref bean="doublePlusOperation"/>
+                <ref bean="doubleMinusOperation"/>
+                <ref bean="doubleSqrtOperation"/>
                 <ref bean="doubleDivideOperation"/>
                 <ref bean="doubleMultiplyOperation"/>
                 <ref bean="dataMinusOperation"/>
@@ -19,6 +23,11 @@
         </property>
     </bean>
 
+    <bean id="longPlusOperation" class="ua.goit.calculator.operations.LongPlusOperation"/>
+    <bean id="longMinusOperation" class="ua.goit.calculator.operations.LongMinusOperation"/>
+    <bean id="doublePlusOperation" class="ua.goit.calculator.operations.DoublePlusOperation"/>
+    <bean id="doubleMinusOperation" class="ua.goit.calculator.operations.DoubleMinusOperation"/>
+    <bean id="doubleSqrtOperation" class="ua.goit.calculator.operations.DoubleSquareRootOperation"/>
     <bean id="doubleDivideOperation" class="ua.goit.calculate.DoubleDivideOperation"/>
     <bean id="doubleMultiplyOperation" class="ua.goit.calculate.DoubleMultiplyOperation"/>
     <bean id="dataMinusOperation" class="ua.goit.calculate.DataMinusOperation"/>

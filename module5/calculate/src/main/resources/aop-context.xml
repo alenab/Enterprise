@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           https://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop
+                           https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="logAspect" class="ua.goit.calculate.LogAspect"/>
+
+    <aop:config>
+        <aop:pointcut id="calculatorLogin" expression="target(ua.goit.calculator.operations.Operation)"/>
+
+        <aop:aspect ref="logAspect">
+            <aop:around pointcut-ref="calculatorLogin" method="login"/>
+        </aop:aspect>
+    </aop:config>
+</beans>
