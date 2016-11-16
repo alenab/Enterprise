@@ -69,6 +69,18 @@ public class DishDao {
         return result;
     }
 
+    public Dish getById(int id) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM DISH WHERE  DISH_ID = ?")) {
+            statement.setInt(1,id);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return createDish(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Dish createDish(ResultSet resultSet) throws SQLException {
         Dish dish = new Dish();
         dish.setDishID(resultSet.getInt("dish_id"));

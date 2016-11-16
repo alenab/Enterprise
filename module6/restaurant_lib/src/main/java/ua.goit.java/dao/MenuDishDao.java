@@ -1,9 +1,12 @@
 package ua.goit.java.dao;
 
+import ua.goit.java.Employee;
 import ua.goit.java.Menu;
 import ua.goit.java.MenuDish;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuDishDao {
 
@@ -34,6 +37,23 @@ public class MenuDishDao {
         }
 
     }
+    public List<MenuDish> getByMenuId(int id) {
+        List<MenuDish> result = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM MENU_DISH WHERE  MENU_ID = ?")) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                MenuDish menuDish = createMenuDish(resultSet);
+                result.add(menuDish);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return  result;
+    }
+
 
     private MenuDish createMenuDish(ResultSet resultSet) throws SQLException {
         MenuDish menuDish = new MenuDish();

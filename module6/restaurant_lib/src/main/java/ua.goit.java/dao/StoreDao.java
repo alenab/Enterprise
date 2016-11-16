@@ -68,6 +68,18 @@ public class StoreDao {
         return result;
     }
 
+    public void setQuantity(int id, float quantity) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("UPDATE STORE SET QUANTITY = ? WHERE ID = ?")) {
+            statement.setInt(2, id);
+            statement.setFloat(1, quantity);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     private Store createStore(ResultSet resultSet) throws SQLException {
         Store store  = new Store();
         store.setId(resultSet.getInt("id"));

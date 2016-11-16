@@ -30,7 +30,7 @@ public class EmployeeDao {
     public int delete(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement("DELETE FROM EMPLOYEE WHERE ID = ?")) {
-            statement.setInt(1, id);
+            statement.setInt(1, Integer.valueOf(id));
             return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -57,7 +57,7 @@ public class EmployeeDao {
     public Employee getById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM EMPLOYEE WHERE  ID = ?")) {
-            statement.setInt(1, id);
+            statement.setInt(1, Integer.valueOf(id));
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return createEmployee(resultSet);
