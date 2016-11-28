@@ -8,6 +8,7 @@ public class Orders {
     private int employeeID;
     private int tableNumber;
     private LocalDate ordersDate;
+    private String status;
 
     public int getOrderId() {
         return orderId;
@@ -41,6 +42,14 @@ public class Orders {
         this.ordersDate = ordersDate;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Orders{" +
@@ -48,6 +57,7 @@ public class Orders {
                 ", employeeID=" + employeeID +
                 ", tableNumber=" + tableNumber +
                 ", ordersDate=" + ordersDate +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

@@ -37,10 +37,11 @@ public class PrepareDishDao {
                 PrepareDish prepareDish = createPrepareDish(resultSet);
                 result.add(prepareDish);
             }
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return result;
+
     }
 
     private PrepareDish createPrepareDish(ResultSet resultSet) throws SQLException {
@@ -49,7 +50,7 @@ public class PrepareDishDao {
         prepareDish.setDishId(resultSet.getInt("dish_id"));
         prepareDish.setEmployeeID(resultSet.getInt("employee_id"));
         prepareDish.setOrderId(resultSet.getInt("order_id"));
-        prepareDish.setPrepareDate(resultSet.getDate("prepare_date").toLocalDate());
+        prepareDish.setPrepareDate(resultSet.getDate("preare_date").toLocalDate());
         return prepareDish;
     }
 }

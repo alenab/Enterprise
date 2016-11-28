@@ -15,8 +15,8 @@ public class StoreDao {
 
     public int add(int ingredientId, float quantity) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO STORE VALUES (DEFAULT, ?)")) {
-            statement.setInt(1,ingredientId);
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO STORE VALUES (DEFAULT, ?, ?)")) {
+            statement.setInt(1, ingredientId);
             statement.setFloat(2, quantity);
             return statement.executeUpdate();
         } catch (SQLException e) {
@@ -35,21 +35,16 @@ public class StoreDao {
 
     }
 
-    // List or Store
-    public List<Store> findByName(String name) {
-        List<Store> result = new ArrayList<>();
+    public Store findByIngredientId(int ingredId) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM STORE WHERE  NAME = ?")) {
-            statement.setString(1, name);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM STORE WHERE  INGRIDIENT_ID = ?")) {
+            statement.setInt(1, ingredId);
             ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                Store store = createStore(resultSet);
-                result.add(store);
-            }
+            resultSet.next();
+            return createStore(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return result;
     }
 
     public List<Store> getAll() {
@@ -81,9 +76,9 @@ public class StoreDao {
 
 
     private Store createStore(ResultSet resultSet) throws SQLException {
-        Store store  = new Store();
+        Store store = new Store();
         store.setId(resultSet.getInt("id"));
-        store.setIngredientId(resultSet.getInt("ingredient_id"));
+        store.setIngredientId(resultSet.getInt("ingridient_id"));
         store.setQuantity(resultSet.getFloat("quantity"));
         return store;
     }

@@ -17,10 +17,11 @@ public class OrdersDao {
 
     public int add(int employeeId, int tableNumber, Date orderDate) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO ORDERS VALUES (DEFAULT, ?, ?, ?)")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO ORDERS VALUES (DEFAULT, ?, ?, ?, ?)")) {
             statement.setInt(1, employeeId);
             statement.setInt(2, tableNumber);
-            statement.setDate(3,orderDate) ;
+            statement.setDate(3, orderDate);
+            statement.setString(4, "open");
             return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -54,12 +55,37 @@ public class OrdersDao {
         return result;
     }
 
+    public Orders getById(int id) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM ORDERS WHERE ORDER_ID = ?")) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return createOrder(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public void setClose(int id) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("UPDATE ORDERS SET STATUS='close' WHERE ORDER_ID = ?")) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private Orders createOrder(ResultSet resultSet) throws SQLException {
         Orders orders = new Orders();
         orders.setOrderId(resultSet.getInt("order_id"));
         orders.setEmployeeID(resultSet.getInt("employee_id"));
         orders.setTableNumber(resultSet.getInt("table_number"));
         orders.setOrdersDate(resultSet.getDate("orders_date").toLocalDate());
+        orders.setStatus(resultSet.getString("status"));
         return orders;
     }
 }

@@ -12,6 +12,9 @@ public class Application {
         tableNames.add(new EmployeeCommandHandler());
         tableNames.add(new DishCommandHandler());
         tableNames.add(new MenuCommandHandler());
+        tableNames.add(new OrderCommandHandler());
+        tableNames.add(new KitchenCommandHandler());
+        tableNames.add(new StoreCommandHandler());
 
         System.out.println("Please, enter a command from the command set and press 'enter': \n\n" +
                 "employee print - to show a list of employees \nemployee find 'employee_name'- to find employee by name\n" +

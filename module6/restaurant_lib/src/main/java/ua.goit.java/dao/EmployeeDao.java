@@ -57,7 +57,7 @@ public class EmployeeDao {
     public Employee getById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM EMPLOYEE WHERE  ID = ?")) {
-            statement.setInt(1, Integer.valueOf(id));
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return createEmployee(resultSet);

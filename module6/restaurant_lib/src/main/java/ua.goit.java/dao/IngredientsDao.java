@@ -1,5 +1,6 @@
 package ua.goit.java.dao;
 
+import ua.goit.java.Employee;
 import ua.goit.java.Ingredients;
 
 import java.sql.*;
@@ -38,6 +39,19 @@ public class IngredientsDao {
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM INGREDIENTS WHERE  ID = ?")) {
             statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next())
+            return createIngredients(resultSet);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Ingredients findByName(String name) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM  INGREDIENTS WHERE  NAME = ?")) {
+            statement.setString(1, name);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return createIngredients(resultSet);
