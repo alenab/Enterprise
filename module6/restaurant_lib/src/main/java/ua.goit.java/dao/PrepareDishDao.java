@@ -1,7 +1,7 @@
 package ua.goit.java.dao;
 
+import ua.goit.java.Employee;
 import ua.goit.java.Orders;
-import ua.goit.java.OrdersDish;
 import ua.goit.java.PrepareDish;
 
 import java.sql.*;
@@ -44,13 +44,32 @@ public class PrepareDishDao {
 
     }
 
+    public List<Dish> getByOrderId(int orderId) {
+        List<Dish> result = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM PREPARE_DISH WHERE ORDER_ID = ?")) {
+            statement.setInt(1,orderId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                PrepareDish prepareDish = createPrepareDish(resultSet);
+                result.add(prepareDish.getDish());
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private PrepareDish createPrepareDish(ResultSet resultSet) throws SQLException {
         PrepareDish prepareDish = new PrepareDish();
         prepareDish.setId(resultSet.getInt("id"));
-        prepareDish.setDishId(resultSet.getInt("dish_id"));
-        prepareDish.setEmployeeID(resultSet.getInt("employee_id"));
-        prepareDish.setOrderId(resultSet.getInt("order_id"));
-        prepareDish.setPrepareDate(resultSet.getDate("preare_date").toLocalDate());
+        Dish dish = new DishDao().getById(resultSet.getInt("dish_id"));
+        prepareDish.setDish(dish);
+        Employee employee = new EmployeeDao().getById(resultSet.getInt("employee_id"));
+        prepareDish.setEmployee(employee);
+        Orders orders = new OrdersDao().getById(resultSet.getInt("order_id"));
+        prepareDish.setOrder(orders);
+        prepareDish.setPrepareDate(resultSet.getDate("prepare_date").toLocalDate());
         return prepareDish;
     }
 }

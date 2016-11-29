@@ -1,5 +1,7 @@
 package ua.goia.java;
 
+import ua.goit.java.dao.EmployeeDao;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +11,7 @@ public class Application {
     public static void main(String[] args) {
 
         List<CommandHandler> tableNames = new ArrayList<>();
-        tableNames.add(new EmployeeCommandHandler());
+        tableNames.add(new EmployeeCommandHandler(new EmployeeDao()));
         tableNames.add(new DishCommandHandler());
         tableNames.add(new MenuCommandHandler());
         tableNames.add(new OrderCommandHandler());
@@ -21,7 +23,7 @@ public class Application {
                 "employee add 'surname, name, birthday 'yyyy-mm-dd', phoneNumber,positionId, salary' - to add an employee \n" +
                 "employee delete 'id_of_employee' - to delete an employee  \n\ndish print - to show a list of dishes\n" +
                 "dish find 'dish_name'- to find dish by name\ndish add 'dish_name category_id price weight' - to add dish\n" +
-                "dish delete 'dish_id'- to delete dish\n... \n stop - to exit" );
+                "dish delete 'dish_id'- to deleteDish dish\n... \n stop - to exit" );
         String command;
         String tableName;
         String[] commandToExecute;

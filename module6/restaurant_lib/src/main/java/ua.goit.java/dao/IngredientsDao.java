@@ -41,7 +41,7 @@ public class IngredientsDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next())
-            return createIngredients(resultSet);
+                return createIngredients(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -50,14 +50,16 @@ public class IngredientsDao {
 
     public Ingredients findByName(String name) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM  INGREDIENTS WHERE  NAME = ?")) {
-            statement.setString(1, name);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM INGREDIENTS WHERE LOWER (NAME)  LOW=ER (?)")) {
+            statement.setString(1, "%" + name + "%");
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return createIngredients(resultSet);
+            if (resultSet.next()) {
+               return createIngredients(resultSet);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return null;
     }
 
     public List<Ingredients> getAll() {

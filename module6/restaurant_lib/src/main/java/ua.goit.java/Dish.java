@@ -1,11 +1,24 @@
 package ua.goit.java;
 
+import java.util.List;
+import java.util.Objects;
+
 public class Dish {
+
     private int dishID;
     private String name;
-    private int categoryId;
+    private Category category;
     private float price;
     private float weight;
+    private List<Ingredients> ingredients;
+
+    public List<Ingredients> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Ingredients> ingredients) {
+        this.ingredients = ingredients;
+    }
 
     public int getDishID() {
         return dishID;
@@ -23,12 +36,12 @@ public class Dish {
         this.name = name;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategory(Category categoryId) {
+        this.category = categoryId;
     }
 
     public float getPrice() {
@@ -48,13 +61,27 @@ public class Dish {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Dish)) return false;
+        Dish dish = (Dish) o;
+        return getDishID() == dish.getDishID();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDishID());
+    }
+
+    @Override
     public String toString() {
         return "Dish{" +
                 "dishID=" + dishID +
                 ", name='" + name + '\'' +
-                ", categoryId=" + categoryId +
+                ", category=" + category +
                 ", price=" + price +
                 ", weight=" + weight +
+                ", ingredients=" + ingredients +
                 '}';
     }
 }

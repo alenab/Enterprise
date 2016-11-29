@@ -1,7 +1,6 @@
 package ua.goit.java.dao;
 
-import ua.goit.java.Employee;
-import ua.goit.java.Position;
+import ua.goit.java.Ingredients;
 import ua.goit.java.Store;
 
 import java.sql.*;
@@ -35,10 +34,10 @@ public class StoreDao {
 
     }
 
-    public Store findByIngredientId(int ingredId) {
+    public Store findByIngredientId(int ingredientId) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM STORE WHERE  INGRIDIENT_ID = ?")) {
-            statement.setInt(1, ingredId);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM STORE WHERE  INGREDIENT_ID = ?")) {
+            statement.setInt(1, ingredientId);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return createStore(resultSet);
@@ -78,7 +77,8 @@ public class StoreDao {
     private Store createStore(ResultSet resultSet) throws SQLException {
         Store store = new Store();
         store.setId(resultSet.getInt("id"));
-        store.setIngredientId(resultSet.getInt("ingridient_id"));
+        Ingredients ingredients = new IngredientsDao().getById(resultSet.getInt("ingredient_id"));
+        store.setIngredient(ingredients);
         store.setQuantity(resultSet.getFloat("quantity"));
         return store;
     }

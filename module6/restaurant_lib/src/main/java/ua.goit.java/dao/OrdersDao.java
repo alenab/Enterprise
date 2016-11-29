@@ -1,7 +1,7 @@
 package ua.goit.java.dao;
 
-import ua.goit.java.Dish;
 import ua.goit.java.Employee;
+import ua.goit.java.OrderedDish;
 import ua.goit.java.Orders;
 
 import java.sql.*;
@@ -79,13 +79,73 @@ public class OrdersDao {
         }
     }
 
+
     private Orders createOrder(ResultSet resultSet) throws SQLException {
         Orders orders = new Orders();
         orders.setOrderId(resultSet.getInt("order_id"));
-        orders.setEmployeeID(resultSet.getInt("employee_id"));
+        Employee employee = new EmployeeDao().getById(resultSet.getInt("employee_id"));
+        orders.setEmployee(employee);
         orders.setTableNumber(resultSet.getInt("table_number"));
         orders.setOrdersDate(resultSet.getDate("orders_date").toLocalDate());
         orders.setStatus(resultSet.getString("status"));
         return orders;
     }
+
+    public int addDish(int orderId, int dishId, int amountDish) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO ORDERS_DISH VALUES (?, ?, ?)")) {
+            statement.setInt(1, orderId);
+            statement.setInt(2, dishId);
+            statement.setInt(3, amountDish);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int deleteDish(int orderId, int dishId) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM ORDERS_DISH WHERE ORDER_ID = ? AND DISH_ID = ? ")) {
+            statement.setInt(1, orderId);
+            statement.setInt(2, dishId);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public List<OrderedDish> getOrderedDishesByOrderId(int id) {
+        List<OrderedDish> result = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT DISH_ID, AMOUNT_DISH FROM ORDERS_DISH WHERE ORDER_ID = ?")) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                OrderedDish orderedDish = createOrderedDish(resultSet);
+                result.add(orderedDish);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Dish> getDishesByOrderId(int orderId) {
+        List<Dish> orderedDishes = new ArrayList<>();
+        for (OrderedDish orderedDish : getOrderedDishesByOrderId(orderId)) {
+            for (int quantity = 0; quantity < orderedDish.getQuantity(); quantity++) {
+                orderedDishes.add(orderedDish.getDish());
+            }
+        }
+        return orderedDishes;
+    }
+
+    private OrderedDish createOrderedDish(ResultSet resultSet) throws SQLException {
+        OrderedDish orderedDish = new OrderedDish();
+        Dish dish = new DishDao().getById(resultSet.getInt("dish_id"));
+        orderedDish.setDish(dish);
+        orderedDish.setQuantity(resultSet.getInt("amount_dish"));
+        return orderedDish;
+    }
 }
+

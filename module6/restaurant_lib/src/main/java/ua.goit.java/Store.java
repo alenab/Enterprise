@@ -3,7 +3,7 @@ package ua.goit.java;
 public class Store {
 
     private int id;
-    private int ingredientId;
+    private Ingredients ingredient;
     private float quantity;
 
     public int getId() {
@@ -14,12 +14,12 @@ public class Store {
         this.id = id;
     }
 
-    public int getIngredientId() {
-        return ingredientId;
+    public Ingredients getIngredient() {
+        return ingredient;
     }
 
-    public void setIngredientId(int ingredientId) {
-        this.ingredientId = ingredientId;
+    public void setIngredient(Ingredients ingredient) {
+        this.ingredient = ingredient;
     }
 
     public float getQuantity() {
@@ -34,7 +34,7 @@ public class Store {
     public String toString() {
         return "Store{" +
                 "id=" + id +
-                ", ingredientId=" + ingredientId +
+                ", ingredient=" + ingredient +
                 ", quantity=" + quantity +
                 '}';
     }

@@ -3,7 +3,6 @@ package ua.goia.java;
 import ua.goit.java.PrepareDish;
 import ua.goit.java.dao.DishDao;
 import ua.goit.java.dao.EmployeeDao;
-import ua.goit.java.dao.PositionDao;
 import ua.goit.java.dao.PrepareDishDao;
 
 import java.sql.Date;
@@ -35,10 +34,9 @@ public class KitchenCommandHandler implements CommandHandler {
                 System.out.println( String.format("|| %5s | %15s | %15s | %5s | %20s\n", "id", "dish",
                         "employee", "order_id", "date"));
                 for (PrepareDish prepareDish : list) {
-                    String dish = new DishDao().getById(prepareDish.getDishId()).getName();
-                    String employee = new EmployeeDao().getById(prepareDish.getEmployeeID()).getName();
                     result += String.format("|| %5d | %15s | %15s | %5d | %20s\n", prepareDish.getId(),
-                            dish, employee, prepareDish.getOrderId(), prepareDish.getPrepareDate());
+                            prepareDish.getDish().getName(), prepareDish.getEmployee().getSurname(), prepareDish.getOrder().getOrderId(),
+                            prepareDish.getPrepareDate());
                 }
                 return result;
         }

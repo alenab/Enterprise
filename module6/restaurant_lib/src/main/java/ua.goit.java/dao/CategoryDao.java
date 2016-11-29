@@ -1,8 +1,5 @@
 package ua.goit.java.dao;
 
-import ua.goit.java.Category;
-import ua.goit.java.Position;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

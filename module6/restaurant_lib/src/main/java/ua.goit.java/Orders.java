@@ -1,14 +1,17 @@
 package ua.goit.java;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 public class Orders {
 
     private int orderId;
-    private int employeeID;
+    private Employee employee;
     private int tableNumber;
     private LocalDate ordersDate;
     private String status;
+    private List<OrderedDish> orderedDish;
 
     public int getOrderId() {
         return orderId;
@@ -18,12 +21,12 @@ public class Orders {
         this.orderId = orderId;
     }
 
-    public int getEmployeeID() {
-        return employeeID;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     public int getTableNumber() {
@@ -50,14 +53,23 @@ public class Orders {
         this.status = status;
     }
 
+    public List<OrderedDish> getOrderedDish() {
+        return orderedDish;
+    }
+
+    public void setOrderedDish(List<OrderedDish> orderedDish) {
+        this.orderedDish = orderedDish;
+    }
+
     @Override
     public String toString() {
         return "Orders{" +
                 "orderId=" + orderId +
-                ", employeeID=" + employeeID +
+                ", employee=" + employee +
                 ", tableNumber=" + tableNumber +
                 ", ordersDate=" + ordersDate +
                 ", status='" + status + '\'' +
+                ", orderedDish=" + orderedDish +
                 '}';
     }
 }

@@ -1,11 +1,7 @@
 package ua.goia.java;
 
-import ua.goit.java.Dish;
-import ua.goit.java.dao.CategoryDao;
 import ua.goit.java.dao.DishDao;
 
-import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DishCommandHandler implements CommandHandler {
@@ -51,9 +47,8 @@ public class DishCommandHandler implements CommandHandler {
         System.out.println(String.format("|| %5s | %15s | %15s | %10s | %10s \n", "id", "name", "category",
                 "price", "weight"));
         for (Dish dish : list) {
-            String category = new CategoryDao().getById(dish.getCategoryId()).getName();
             result += String.format("|| %5d | %15s | %15s | %10.2f | %10.2f \n",
-                    dish.getDishID(), dish.getName(), category, dish.getPrice(), dish.getWeight());
+                    dish.getDishID(), dish.getName(), dish.getCategory().getName(), dish.getPrice(), dish.getWeight());
         }
         return result;
     }

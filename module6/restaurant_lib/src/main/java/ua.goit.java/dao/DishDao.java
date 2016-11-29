@@ -1,7 +1,6 @@
 package ua.goit.java.dao;
 
-import ua.goit.java.Dish;
-import ua.goit.java.Employee;
+import ua.goit.java.Ingredients;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -40,8 +39,8 @@ public class DishDao {
     public List<Dish> findByName(String name) {
         List<Dish> result = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM DISH WHERE NAME = ?")) {
-            statement.setString(1, name);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM DISH WHERE LOWER(NAME) LIKE LOWER(?)")) {
+            statement.setString(1, "%" + name + "%");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Dish dish = createDish(resultSet);
@@ -72,7 +71,7 @@ public class DishDao {
     public Dish getById(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM DISH WHERE  DISH_ID = ?")) {
-            statement.setInt(1,id);
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return createDish(resultSet);
@@ -81,13 +80,31 @@ public class DishDao {
         }
     }
 
+    public List<Ingredients> getIngredientsList(int dishId) {
+        List<Ingredients> listOfIngredients = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT INGREDIENT_ID FROM DISH_INGREDIENTS WHERE DISH_ID = ?")) {
+            statement.setInt(1, dishId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                listOfIngredients.add(new IngredientsDao().getById(resultSet.getInt("INGREDIENT_ID")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listOfIngredients;
+    }
+
     private Dish createDish(ResultSet resultSet) throws SQLException {
         Dish dish = new Dish();
-        dish.setDishID(resultSet.getInt("dish_id"));
+        int id = resultSet.getInt("dish_id");
+        dish.setDishID(id);
         dish.setName(resultSet.getString("name"));
-        dish.setCategoryId(resultSet.getInt("category_id"));
+        Category category = new CategoryDao().getById(resultSet.getInt("category_id"));
+        dish.setCategory(category);
         dish.setPrice(resultSet.getFloat("price"));
         dish.setWeight(resultSet.getFloat("weight"));
+        dish.setIngredients(getIngredientsList(id));
         return dish;
     }
 }

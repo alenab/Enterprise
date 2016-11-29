@@ -5,9 +5,9 @@ import java.time.LocalDate;
 public class PrepareDish {
 
     private int id;
-    private int dishId;
-    private int employeeID;
-    private int orderId;
+    private Dish dish;
+    private Employee employee;
+    private Orders order;
     private LocalDate prepareDate;
 
     public int getId() {
@@ -18,28 +18,28 @@ public class PrepareDish {
         this.id = id;
     }
 
-    public int getDishId() {
-        return dishId;
+    public Dish getDish() {
+        return dish;
     }
 
-    public void setDishId(int dishId) {
-        this.dishId = dishId;
+    public void setDish(Dish dish) {
+        this.dish = dish;
     }
 
-    public int getEmployeeID() {
-        return employeeID;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public Orders getOrder() {
+        return order;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setOrder(Orders order) {
+        this.order = order;
     }
 
     public LocalDate getPrepareDate() {
@@ -54,9 +54,9 @@ public class PrepareDish {
     public String toString() {
         return "PrepareDish{" +
                 "id=" + id +
-                ", dishId=" + dishId +
-                ", employeeID=" + employeeID +
-                ", orderId=" + orderId +
+                ", dish=" + dish +
+                ", employee=" + employee +
+                ", order=" + order +
                 ", prepareDate=" + prepareDate +
                 '}';
     }

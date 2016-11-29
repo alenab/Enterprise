@@ -38,16 +38,14 @@ public class StoreCommandHandler implements CommandHandler {
                 }
             case "correct_quantity":
                 storeDao.setQuantity(ingredientsDao.findByName(commands[1]).getId(), Integer.parseInt(commands[2]));
-                break;
+                return "corrected successfully";
 
             case "find": {
                 Store store = storeDao.findByIngredientId(ingredientsDao.findByName(commands[1]).getId());
                 String result = "";
                 System.out.println(String.format("|| %5s | %20s | %8s | %8s \n", "id", "ingredient", "measurement", "quantity"));
-                String ingredient = ingredientsDao.getById(store.getIngredientId()).getName();
-                String measurement = ingredientsDao.getById(store.getIngredientId()).getMeasurement();
-                result += String.format("|| %5d | %20s | %8s | %8.2f |  \n", store.getId(), ingredient, measurement,
-                        store.getQuantity());
+                result += String.format("|| %5d | %20s | %8s | %8.2f |  \n", store.getId(), store.getIngredient().getName(),
+                       store.getIngredient().getMeasurement(), store.getQuantity());
                 return result;
             }
             case "print": {
@@ -64,17 +62,15 @@ public class StoreCommandHandler implements CommandHandler {
                 }
                 return printStore(result);
         }
-        return "ok";
+        return "you enter incorrect command";
     }
 
     private String printStore(List<Store> list) {
         String result = "";
         System.out.println(String.format("|| %5s | %20s | %8s | %8s \n", "id", "ingredient", "measurement", "quantity"));
         for (Store store : list) {
-            String ingredient = ingredientsDao.getById(store.getIngredientId()).getName();
-            String measurement = ingredientsDao.getById(store.getIngredientId()).getMeasurement();
-            result += String.format("|| %5d | %20s | %8s | %8.2f |  \n", store.getId(), ingredient, measurement,
-                    store.getQuantity());
+            result += String.format("|| %5d | %20s | %8s | %8.2f |  \n", store.getId(), store.getIngredient().getName(),
+                    store.getIngredient().getMeasurement(), store.getQuantity());
         }
         return result;
     }

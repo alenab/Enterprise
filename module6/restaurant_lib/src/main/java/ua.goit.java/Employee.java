@@ -9,7 +9,7 @@ public class Employee {
     private String name;
     private LocalDate birthday;
     private String phoneNumber;
-    private int positionId;
+    private Position position;
     private float salary;
 
     public int getId() {
@@ -52,12 +52,12 @@ public class Employee {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getPositionId() {
-        return positionId;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setPositionId(int positionId) {
-        this.positionId = positionId;
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     public float getSalary() {
@@ -76,7 +76,7 @@ public class Employee {
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", positionId=" + positionId +
+                ", position=" + position +
                 ", salary=" + salary +
                 '}';
     }

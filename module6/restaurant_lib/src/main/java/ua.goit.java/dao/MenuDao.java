@@ -1,6 +1,5 @@
 package ua.goit.java.dao;
 
-import ua.goit.java.Dish;
 import ua.goit.java.Menu;
 
 import java.sql.*;
@@ -36,8 +35,8 @@ public class MenuDao {
     public List<Menu> findByName(String name) {
         List<Menu> result = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM MENU WHERE NAME = ?")) {
-            statement.setString(1, name);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM MENU WHERE LOWER(NAME) LIKE (?)")) {
+            statement.setString(1, "%" + name + "%");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Menu menu = createMenu(resultSet);
@@ -65,9 +64,49 @@ public class MenuDao {
         return result;
     }
 
+    public int addDish(int menuId, int dishId) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO MENU_DISH VALUES (?, ?)")) {
+            statement.setInt(1, menuId);
+            statement.setInt(2, dishId);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int deleteDish(int menuId, int dishId) {
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM MENU_DISH WHERE MENU_ID = ? AND DISH_ID = ? ")) {
+            statement.setInt(1, menuId);
+            statement.setInt(2, dishId);
+            return statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public List<Dish> getDishesList(int menuId) {
+        List<Dish> listOfDishes = new ArrayList<>();
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement("SELECT DISH_ID FROM MENU_DISH WHERE MENU_ID = ?")) {
+            statement.setInt(1, menuId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                listOfDishes.add(new DishDao().getById(resultSet.getInt("dish_id")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listOfDishes;
+    }
+
     private Menu createMenu(ResultSet resultSet) throws SQLException {
         Menu menu = new Menu();
-        menu.setId(resultSet.getInt("id"));
+        int id = resultSet.getInt("id");
+        menu.setId(id);
+        menu.setDishes(getDishesList(id));
         menu.setName(resultSet.getString("name"));
         return menu;
     }

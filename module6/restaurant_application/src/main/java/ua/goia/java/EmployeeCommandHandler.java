@@ -9,7 +9,11 @@ import java.util.List;
 
 public class EmployeeCommandHandler implements CommandHandler {
 
-    private EmployeeDao employeeDao = new EmployeeDao();
+    private EmployeeDao employeeDao;
+
+    public EmployeeCommandHandler(EmployeeDao employeeDao) {
+        this.employeeDao = employeeDao;
+    }
 
     public String getTableName() {
         return "employee";
@@ -48,10 +52,9 @@ public class EmployeeCommandHandler implements CommandHandler {
         System.out.println( String.format("|| %5s | %15s | %15s | %15s | %20s | %15s | %10s\n", "id", "surname",
                 "name", "birthday", "phone_number", "position", "salary"));
         for (Employee employee : list) {
-            String position = new PositionDao().getById(employee.getPositionId()).getName();
             result += String.format("|| %5d | %15s | %15s | %15s | %20s | %15s | %10.2f\n",
                     employee.getId(), employee.getSurname(), employee.getName(), employee.getBirthday(),
-                    employee.getPhoneNumber(), position, employee.getSalary());
+                    employee.getPhoneNumber(), employee.getPosition().getName(), employee.getSalary());
         }
         return result;
     }

@@ -13,6 +13,7 @@
     <modules>
         <module>restaurant_application</module>
         <module>restaurant_lib</module>
+        <module>dao</module>
     </modules>
 
     <dependencyManagement>

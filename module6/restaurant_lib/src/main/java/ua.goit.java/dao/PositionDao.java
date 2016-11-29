@@ -1,7 +1,5 @@
 package ua.goit.java.dao;
 
-import javafx.geometry.Pos;
-import ua.goit.java.Employee;
 import ua.goit.java.Position;
 
 import java.sql.*;
@@ -41,7 +39,7 @@ public class PositionDao {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
-            return createPositin(resultSet);
+            return createPosition(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -54,7 +52,7 @@ public class PositionDao {
             String sql = "SELECT * FROM POSITION";
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                Position position = createPositin(resultSet);
+                Position position = createPosition(resultSet);
                 result.add(position);
             }
         } catch (SQLException e) {
@@ -63,7 +61,7 @@ public class PositionDao {
         return result;
     }
 
-    private Position createPositin(ResultSet resultSet) throws SQLException {
+    private Position createPosition(ResultSet resultSet) throws SQLException {
         Position position = new Position();
         position.setId(resultSet.getInt("id"));
         position.setName(resultSet.getString("name"));

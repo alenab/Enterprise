@@ -1,6 +1,7 @@
 package ua.goit.java.dao;
 
 import ua.goit.java.Employee;
+import ua.goit.java.Position;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class EmployeeDao {
     public int delete(int id) {
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement("DELETE FROM EMPLOYEE WHERE ID = ?")) {
-            statement.setInt(1, Integer.valueOf(id));
+            statement.setInt(1, id);
             return statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -41,8 +42,8 @@ public class EmployeeDao {
     public List<Employee> findByName(String name) {
         List<Employee> result = new ArrayList<>();
         try (Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM EMPLOYEE WHERE  NAME = ?")) {
-            statement.setString(1, name);
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM EMPLOYEE WHERE LOWER (NAME) LIKE LOWER (?)")) {
+            statement.setString(1, "%" + name + "%");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Employee employee = createEmployee(resultSet);
@@ -89,7 +90,8 @@ public class EmployeeDao {
         employee.setName(resultSet.getString("name"));
         employee.setBirthday(resultSet.getDate("birthday").toLocalDate());
         employee.setPhoneNumber(resultSet.getString("phone_number"));
-        employee.setPositionId(resultSet.getInt("position_id"));
+        Position position = new PositionDao().getById(resultSet.getInt("position_id"));
+        employee.setPosition(position);
         employee.setSalary(resultSet.getFloat("salary"));
         return employee;
     }
