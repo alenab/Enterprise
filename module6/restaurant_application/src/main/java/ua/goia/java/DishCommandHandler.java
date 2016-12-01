@@ -1,11 +1,17 @@
 package ua.goia.java;
 
-import ua.goit.java.dao.DishDao;
+import ua.goit.java.db.Dish;
+import ua.goit.java.db.dao.DishDao;
 
 import java.util.List;
 
 public class DishCommandHandler implements CommandHandler {
-    private DishDao dishDao = new DishDao();
+
+    private DishDao dishDao;
+
+    public DishCommandHandler(DishDao dishDao) {
+        this.dishDao = dishDao;
+    }
 
     @Override
     public String getTableName() {

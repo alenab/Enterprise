@@ -1,16 +1,21 @@
 package ua.goia.java;
 
-import ua.goit.java.Store;
-import ua.goit.java.dao.IngredientsDao;
-import ua.goit.java.dao.StoreDao;
+import ua.goit.java.db.Store;
+import ua.goit.java.db.dao.IngredientsDao;
+import ua.goit.java.db.dao.StoreDao;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class StoreCommandHandler implements CommandHandler {
 
-    StoreDao storeDao = new StoreDao();
-    IngredientsDao ingredientsDao = new IngredientsDao();
+    private StoreDao storeDao;
+    private IngredientsDao ingredientsDao;
+
+    public StoreCommandHandler(StoreDao storeDao, IngredientsDao ingredientsDao) {
+        this.storeDao = storeDao;
+        this.ingredientsDao = ingredientsDao;
+    }
 
     @Override
     public String getTableName() {

@@ -1,6 +1,8 @@
 package ua.goia.java;
 
-import ua.goit.java.dao.EmployeeDao;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import ua.goit.java.jdbc.dao.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +10,23 @@ import java.util.Scanner;
 
 public class Application {
 
+    private static final JDBCEmployeeDao employeeDao = new JDBCEmployeeDao();
+    private static final JDBCDishDao dishDao = new JDBCDishDao();
+    private static final JDBCMenuDao menuDao = new JDBCMenuDao();
+    private static final JDBCPrepareDishDao prepareDishDao = new JDBCPrepareDishDao();
+    private static final JDBCOrdersDao ordersDao = new JDBCOrdersDao();
+    private static final JDBCIngredientsDao ingredientsDao = new JDBCIngredientsDao();
+    private static final JDBCStoreDao storeDao = new JDBCStoreDao();
+
     public static void main(String[] args) {
 
         List<CommandHandler> tableNames = new ArrayList<>();
-        tableNames.add(new EmployeeCommandHandler(new EmployeeDao()));
-        tableNames.add(new DishCommandHandler());
-        tableNames.add(new MenuCommandHandler());
-        tableNames.add(new OrderCommandHandler());
-        tableNames.add(new KitchenCommandHandler());
-        tableNames.add(new StoreCommandHandler());
+        tableNames.add(new EmployeeCommandHandler(employeeDao));
+        tableNames.add(new DishCommandHandler(dishDao));
+        tableNames.add(new MenuCommandHandler(menuDao, dishDao));
+        tableNames.add(new OrderCommandHandler(ordersDao, dishDao, prepareDishDao));
+        tableNames.add(new KitchenCommandHandler(prepareDishDao));
+        tableNames.add(new StoreCommandHandler(storeDao, ingredientsDao));
 
         System.out.println("Please, enter a command from the command set and press 'enter': \n\n" +
                 "employee print - to show a list of employees \nemployee find 'employee_name'- to find employee by name\n" +

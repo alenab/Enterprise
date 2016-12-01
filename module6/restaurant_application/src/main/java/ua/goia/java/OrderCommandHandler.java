@@ -1,15 +1,27 @@
 package ua.goia.java;
 
-import ua.goit.java.OrderedDish;
-import ua.goit.java.Orders;
-import ua.goit.java.dao.*;
+import ua.goit.java.db.Dish;
+import ua.goit.java.db.OrderedDish;
+import ua.goit.java.db.Orders;
+import ua.goit.java.db.dao.DishDao;
+import ua.goit.java.db.dao.OrdersDao;
+import ua.goit.java.db.dao.PrepareDishDao;
 
 import java.sql.Date;
 import java.util.List;
 
 
 public class OrderCommandHandler implements CommandHandler {
-    OrdersDao ordersDao = new OrdersDao();
+
+    private OrdersDao ordersDao;
+    private DishDao dishDao;
+    private PrepareDishDao prepareDishDao;
+
+    public OrderCommandHandler(OrdersDao ordersDao, DishDao dishDao, PrepareDishDao prepareDishDao) {
+        this.ordersDao = ordersDao;
+        this.dishDao = dishDao;
+        this.prepareDishDao = prepareDishDao;
+    }
 
     @Override
     public String getTableName() {
@@ -61,7 +73,7 @@ public class OrderCommandHandler implements CommandHandler {
                 if (ordersDao.getById(orderId).getStatus().equals("open")) {
 
                     List<Dish> orderedDishes = ordersDao.getDishesByOrderId(orderId);
-                    orderedDishes.removeAll(new PrepareDishDao().getByOrderId(orderId));
+                    orderedDishes.removeAll(prepareDishDao.getByOrderId(orderId));
                     if (!orderedDishes.isEmpty()) {
                         return String.format("Next dishes were ordered, but not prepared: %s", orderedDishes);
                     }
@@ -89,7 +101,7 @@ public class OrderCommandHandler implements CommandHandler {
                 List<OrderedDish> listDish = ordersDao.getOrderedDishesByOrderId(orders.getOrderId());
                 if (listDish != null) {
                     for (OrderedDish orderedDish : listDish) {
-                        result += new DishDao().getById(orderedDish.getDish().getDishID()).getName() + " - " + orderedDish.getQuantity() + ", ";
+                        result += dishDao.getById(orderedDish.getDish().getDishID()).getName() + " - " + orderedDish.getQuantity() + ", ";
 
                     }
                     result += "\n";

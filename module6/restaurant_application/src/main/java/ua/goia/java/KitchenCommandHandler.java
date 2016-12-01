@@ -1,15 +1,18 @@
 package ua.goia.java;
 
-import ua.goit.java.PrepareDish;
-import ua.goit.java.dao.DishDao;
-import ua.goit.java.dao.EmployeeDao;
-import ua.goit.java.dao.PrepareDishDao;
+import ua.goit.java.db.PrepareDish;
+import ua.goit.java.db.dao.PrepareDishDao;
 
 import java.sql.Date;
 import java.util.List;
 
 public class KitchenCommandHandler implements CommandHandler {
-    PrepareDishDao prepareDishDao = new PrepareDishDao();
+
+    private PrepareDishDao prepareDishDao;
+
+    public KitchenCommandHandler(PrepareDishDao prepareDishDao) {
+        this.prepareDishDao = prepareDishDao;
+    }
 
     @Override
     public String getTableName() {

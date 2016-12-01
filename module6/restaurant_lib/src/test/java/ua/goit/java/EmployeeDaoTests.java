@@ -1,20 +1,15 @@
 package ua.goit.java;
 
-import org.junit.Test;
-import ua.goit.java.dao.EmployeeDao;
+import ua.goit.java.db.dao.EmployeeDao;
+import ua.goit.java.jdbc.dao.JDBCEmployeeDao;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class EmployeeDaoTests {
 
-    private EmployeeDao employeeDao = new EmployeeDao();
+    private EmployeeDao employeeDao = new JDBCEmployeeDao();
 
 //    @Test
 //    public void checkGetAll() {

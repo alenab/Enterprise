@@ -1,8 +1,7 @@
 package ua.goia.java;
 
-import ua.goit.java.Employee;
-import ua.goit.java.dao.EmployeeDao;
-import ua.goit.java.dao.PositionDao;
+import ua.goit.java.db.dao.EmployeeDao;
+import ua.goit.java.db.Employee;
 
 import java.sql.Date;
 import java.util.List;
