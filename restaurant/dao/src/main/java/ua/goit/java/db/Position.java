@@ -1,10 +1,13 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "position")
-public class Position {
+public class Position implements Serializable{
+
+    private static final long serialVersionUID = -9162315974826402870L;
 
     @Id
     @Column(name = "id")

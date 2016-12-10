@@ -1,28 +1,31 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name="prepare_dish")
-public class PrepareDish {
+public class PrepareDish implements Serializable{
+
+    private static final long serialVersionUID = -2799974840813980890L;
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name="dish_id")
     private Dish dish;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name="employee_id")
     private Employee employee;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name="order_id")
-    private Orders order;
+    private Order order;
 
     @Column(name="prepare_date")
     private LocalDate prepareDate;
@@ -51,11 +54,11 @@ public class PrepareDish {
         this.employee = employee;
     }
 
-    public Orders getOrder() {
+    public Order getOrder() {
         return order;
     }
 
-    public void setOrder(Orders order) {
+    public void setOrder(Order order) {
         this.order = order;
     }
 

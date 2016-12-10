@@ -1,14 +1,17 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "employee")
-public class Employee {
+public class Employee implements Serializable{
+
+    private static final long serialVersionUID = 5504600312443214393L;
 
     @Id
-    @Column(name = "dish_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -25,9 +28,10 @@ public class Employee {
     private String phoneNumber;
 
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;
+
     private float salary;
 
     public int getId() {

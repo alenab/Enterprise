@@ -1,6 +1,6 @@
 package ua.goit.java.jdbc.dao;
 
-import ua.goit.java.db.Ingredients;
+import ua.goit.java.db.Ingredient;
 import ua.goit.java.db.dao.IngredientsDao;
 
 import javax.sql.DataSource;
@@ -41,7 +41,7 @@ public class JDBCIngredientsDao implements IngredientsDao {
     }
 
     @Override
-    public Ingredients getById(int id) {
+    public Ingredient getById(int id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM INGREDIENTS WHERE  ID = ?")) {
             statement.setInt(1, id);
@@ -55,7 +55,7 @@ public class JDBCIngredientsDao implements IngredientsDao {
     }
 
     @Override
-    public Ingredients findByName(String name) {
+    public Ingredient findByName(String name) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM INGREDIENTS WHERE LOWER (NAME) like LOWER (?)")) {
             statement.setString(1, "%" + name + "%");
@@ -70,15 +70,15 @@ public class JDBCIngredientsDao implements IngredientsDao {
     }
 
     @Override
-    public List<Ingredients> getAll() {
-        List<Ingredients> result = new ArrayList<>();
+    public List<Ingredient> getAll() {
+        List<Ingredient> result = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             String sql = "SELECT * FROM INGREDIENTS";
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                Ingredients ingredients = createIngredients(resultSet);
-                result.add(ingredients);
+                Ingredient ingredient = createIngredients(resultSet);
+                result.add(ingredient);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -86,11 +86,11 @@ public class JDBCIngredientsDao implements IngredientsDao {
         return result;
     }
 
-    private Ingredients createIngredients(ResultSet resultSet) throws SQLException {
-        Ingredients ingredients = new Ingredients();
-        ingredients.setId(resultSet.getInt("id"));
-        ingredients.setName(resultSet.getString("name"));
-        ingredients.setMeasurement(resultSet.getString("measurement"));
-        return ingredients;
+    private Ingredient createIngredients(ResultSet resultSet) throws SQLException {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(resultSet.getInt("id"));
+        ingredient.setName(resultSet.getString("name"));
+        ingredient.setMeasurement(resultSet.getString("measurement"));
+        return ingredient;
     }
 }

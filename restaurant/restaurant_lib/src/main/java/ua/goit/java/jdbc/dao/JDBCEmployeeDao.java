@@ -3,6 +3,7 @@ package ua.goit.java.jdbc.dao;
 import ua.goit.java.db.Employee;
 import ua.goit.java.db.Position;
 import ua.goit.java.db.dao.EmployeeDao;
+import ua.goit.java.db.dao.PositionDao;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,7 +13,7 @@ import java.util.List;
 public class JDBCEmployeeDao implements EmployeeDao {
 
     private DataSource dataSource;
-    private JDBCPositionDao positionDao;
+    private PositionDao positionDao;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;

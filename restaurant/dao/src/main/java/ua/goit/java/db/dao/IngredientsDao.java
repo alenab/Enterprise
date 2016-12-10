@@ -1,20 +1,18 @@
 package ua.goit.java.db.dao;
 
-import ua.goit.java.db.Ingredients;
+import ua.goit.java.db.Ingredient;
 
 import java.util.List;
 
-/**
- * Created by Alena on 30.11.2016.
- */
 public interface IngredientsDao {
+
     int add(String name, String measurement);
 
     int delete(int id);
 
-    Ingredients getById(int id);
+    Ingredient getById(int id);
 
-    Ingredients findByName(String name);
+    List<Ingredient> findByName(String name);
 
-    List<Ingredients> getAll();
+    List<Ingredient> getAll();
 }

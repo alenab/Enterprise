@@ -3,19 +3,22 @@ package ua.goit.java.jdbc.dao;
 import ua.goit.java.db.Dish;
 import ua.goit.java.db.Employee;
 import ua.goit.java.db.OrderedDish;
-import ua.goit.java.db.Orders;
-import ua.goit.java.db.dao.OrdersDao;
+import ua.goit.java.db.Order;
+import ua.goit.java.db.dao.DishDao;
+import ua.goit.java.db.dao.EmployeeDao;
+import ua.goit.java.db.dao.OrderDao;
+import ua.goit.java.hibernate.dao.HDishDao;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JDBCOrdersDao implements OrdersDao {
+public class JDBCOrderDao implements OrderDao {
 
     private DataSource dataSource;
-    private JDBCEmployeeDao employeeDao;
-    private JDBCDishDao dishDao;
+    private EmployeeDao employeeDao;
+    private DishDao dishDao;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -25,7 +28,7 @@ public class JDBCOrdersDao implements OrdersDao {
         this.employeeDao = employeeDao;
     }
 
-    public void setDishDao(JDBCDishDao dishDao) {
+    public void setDishDao(HDishDao dishDao) {
         this.dishDao = dishDao;
     }
 
@@ -56,15 +59,15 @@ public class JDBCOrdersDao implements OrdersDao {
     }
 
     @Override
-    public List<Orders> getAll() {
-        List<Orders> result = new ArrayList<>();
+    public List<Order> getAll() {
+        List<Order> result = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement()) {
             String sql = "SELECT * FROM ORDERS";
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                Orders orders = createOrder(resultSet);
-                result.add(orders);
+                Order order = createOrder(resultSet);
+                result.add(order);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -73,7 +76,7 @@ public class JDBCOrdersDao implements OrdersDao {
     }
 
     @Override
-    public Orders getById(int id) {
+    public Order getById(int id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM ORDERS WHERE ORDER_ID = ?")) {
             statement.setInt(1, id);
@@ -99,15 +102,15 @@ public class JDBCOrdersDao implements OrdersDao {
     }
 
 
-    private Orders createOrder(ResultSet resultSet) throws SQLException {
-        Orders orders = new Orders();
-        orders.setOrderId(resultSet.getInt("order_id"));
+    private Order createOrder(ResultSet resultSet) throws SQLException {
+        Order order = new Order();
+        order.setOrderId(resultSet.getInt("order_id"));
         Employee employee = employeeDao.getById(resultSet.getInt("employee_id"));
-        orders.setEmployee(employee);
-        orders.setTableNumber(resultSet.getInt("table_number"));
-        orders.setOrdersDate(resultSet.getDate("orders_date").toLocalDate());
-        orders.setStatus(resultSet.getString("status"));
-        return orders;
+        order.setEmployee(employee);
+        order.setTableNumber(resultSet.getInt("table_number"));
+        order.setOrdersDate(resultSet.getDate("orders_date").toLocalDate());
+        order.setStatus(resultSet.getString("status"));
+        return order;
     }
 
     @Override
@@ -150,17 +153,6 @@ public class JDBCOrdersDao implements OrdersDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<Dish> getDishesByOrderId(int orderId) {
-        List<Dish> orderedDishes = new ArrayList<>();
-        for (OrderedDish orderedDish : getOrderedDishesByOrderId(orderId)) {
-            for (int quantity = 0; quantity < orderedDish.getQuantity(); quantity++) {
-                orderedDishes.add(orderedDish.getDish());
-            }
-        }
-        return orderedDishes;
     }
 
     private OrderedDish createOrderedDish(ResultSet resultSet) throws SQLException {

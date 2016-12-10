@@ -1,17 +1,45 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="orders_dish")
-public class OrderedDish {
+public class OrderedDish implements Serializable{
 
-    @OneToMany
+    private static final long serialVersionUID = 8615816117699429260L;
+
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int Id;
+
+    @ManyToOne
+    @JoinColumn(name="order_id")
+    private Order order;
+
+    @OneToOne
     @JoinColumn(name="dish_id")
     private Dish dish;
 
     @Column(name="amount_dish")
     private int quantity;
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 
     public Dish getDish() {
         return dish;
@@ -32,7 +60,9 @@ public class OrderedDish {
     @Override
     public String toString() {
         return "OrderedDish{" +
-                "dish=" + dish +
+                "Id=" + Id +
+                ", order=" + order +
+                ", dish=" + dish +
                 ", quantity=" + quantity +
                 '}';
     }

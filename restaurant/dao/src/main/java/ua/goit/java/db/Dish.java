@@ -1,22 +1,25 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "dish")
-public class Dish {
+public class Dish implements Serializable {
+
+    private static final long serialVersionUID = -7900736302658170004L;
 
     @Id
     @Column(name = "dish_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int dishID;
+    private int dishId;
 
     @Column(name = "name")
     private String name;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -27,26 +30,25 @@ public class Dish {
     private float weight;
 
     @ManyToMany
-    @JoinTable
-//            (name = ,
-//            joinColumns = @JoinColumn(name = ),
-//            inverseJoinColumns = @JoinColumn(name = ))
-    private List<Ingredients> ingredients;
+    @JoinTable(name = "dish_ingredients",
+            joinColumns = @JoinColumn(name = "dish_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
+    private List<Ingredient> ingredients;
 
-    public List<Ingredients> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<Ingredients> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public int getDishID() {
-        return dishID;
+    public int getDishId() {
+        return dishId;
     }
 
-    public void setDishID(int dishID) {
-        this.dishID = dishID;
+    public void setDishId(int dishId) {
+        this.dishId = dishId;
     }
 
     public String getName() {
@@ -86,18 +88,18 @@ public class Dish {
         if (this == o) return true;
         if (!(o instanceof Dish)) return false;
         Dish dish = (Dish) o;
-        return getDishID() == dish.getDishID();
+        return getDishId() == dish.getDishId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDishID());
+        return Objects.hash(getDishId());
     }
 
     @Override
     public String toString() {
         return "Dish{" +
-                "dishID=" + dishID +
+                "dishID=" + dishId +
                 ", name='" + name + '\'' +
                 ", category=" + category +
                 ", price=" + price +

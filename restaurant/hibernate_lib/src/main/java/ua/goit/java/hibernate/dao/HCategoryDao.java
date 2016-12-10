@@ -1,8 +1,9 @@
-package ua.goit.java.hidernate.dao;
+package ua.goit.java.hibernate.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.transaction.annotation.Transactional;
 import ua.goit.java.db.Category;
 import ua.goit.java.db.dao.CategoryDao;
 
@@ -16,7 +17,10 @@ public class HCategoryDao implements CategoryDao {
         this.sessionFactory = sessionFactory;
     }
 
+    public HCategoryDao() {
+    }
 
+    @Transactional
     @Override
     public int add(String name) {
         Category category = new Category();
@@ -25,19 +29,16 @@ public class HCategoryDao implements CategoryDao {
 
     }
 
+    @Transactional
     @Override
     public int delete(int id) {
         Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        Query query = session.createQuery("delete Category where id = :ID");
-        query.setParameter("ID", id);
-
-        int result = query.executeUpdate();
-
-        session.getTransaction().commit();
-        return result;
+        Query query = session.createQuery("delete from Category where id = :id");
+        query.setParameter("id", id);
+        return query.executeUpdate();
     }
 
+    @Transactional
     @Override
     public Category getById(int id) {
         Query<Category> query = sessionFactory.getCurrentSession().createQuery("select c from Category c" +
@@ -47,12 +48,11 @@ public class HCategoryDao implements CategoryDao {
 
     }
 
+    @Transactional
     @Override
     public List<Category> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        List<Category> result= session.createQuery("select c from Category c", Category.class).list();
-        session.getTransaction().commit();
+        List<Category> result = session.createQuery("select c from Category c", Category.class).list();
         return result;
 
 

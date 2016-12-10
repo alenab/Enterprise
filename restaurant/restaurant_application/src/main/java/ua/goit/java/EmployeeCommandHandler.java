@@ -21,23 +21,40 @@ public class EmployeeCommandHandler implements CommandHandler {
     @Override
     public String handler(String... commands) {
         String command = commands[0];
+
         switch (command) {
+
             case "print": {
                 List<Employee> list = employeeDao.getAll();
                 return printEmployee(list);
             }
-            case "find":
-                List<Employee> list = employeeDao.findByName(commands[1]);
+
+            case "find": {
+                String name = commands[1];
+
+                List<Employee> list = employeeDao.findByName(name);
                 return printEmployee(list);
+            }
+
             case "delete":
-                if (employeeDao.delete(Integer.valueOf(commands[1])) > 0) {
+                Integer id = Integer.valueOf(commands[1]);
+
+                if (employeeDao.delete(id) > 0) {
                     return "deleted successfully";
                 } else {
                     return "not deleted";
                 }
+
             case "add":
-                if (employeeDao.add(commands[1], commands[2], Date.valueOf(commands[3]), commands[4],
-                        Integer.parseInt(commands[5]), Integer.parseInt(commands[6])) > 0) {
+                String surname = commands[1];
+                String name = commands[2];
+                Date birthday = Date.valueOf(commands[3]);
+                String phoneNumber = commands[4];
+                int positionId = Integer.parseInt(commands[5]);
+                int salary = Integer.parseInt(commands[6]);
+
+                if (employeeDao.add(surname, name, birthday, phoneNumber,
+                        positionId, salary) > 0) {
                     return "added successfully";
                 } else {
                     return "not added";

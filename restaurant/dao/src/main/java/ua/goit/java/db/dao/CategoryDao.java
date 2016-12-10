@@ -5,6 +5,7 @@ import ua.goit.java.db.Category;
 import java.util.List;
 
 public interface CategoryDao {
+
     int add(String name);
 
     int delete(int id);

@@ -1,8 +1,13 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-public class Store {
+@Entity
+@Table(name="store")
+public class Store implements Serializable{
+
+    private static final long serialVersionUID = 6113497073094739885L;
 
     @Id
     @Column(name = "id")
@@ -11,7 +16,7 @@ public class Store {
 
     @OneToOne
     @JoinColumn(name = "ingredient_id")
-    private Ingredients ingredient;
+    private Ingredient ingredient;
 
     @Column(name="quantity")
     private float quantity;
@@ -24,11 +29,11 @@ public class Store {
         this.id = id;
     }
 
-    public Ingredients getIngredient() {
+    public Ingredient getIngredient() {
         return ingredient;
     }
 
-    public void setIngredient(Ingredients ingredient) {
+    public void setIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
     }
 

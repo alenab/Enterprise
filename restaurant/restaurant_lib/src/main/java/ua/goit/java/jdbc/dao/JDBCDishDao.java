@@ -2,8 +2,10 @@ package ua.goit.java.jdbc.dao;
 
 import ua.goit.java.db.Category;
 import ua.goit.java.db.Dish;
-import ua.goit.java.db.Ingredients;
+import ua.goit.java.db.Ingredient;
+import ua.goit.java.db.dao.CategoryDao;
 import ua.goit.java.db.dao.DishDao;
+import ua.goit.java.db.dao.IngredientsDao;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -13,14 +15,14 @@ import java.util.List;
 public class JDBCDishDao implements DishDao {
 
     private DataSource dataSource;
-    private JDBCCategoryDao categoryDao;
-    private JDBCIngredientsDao ingredientsDao;
+    private CategoryDao categoryDao;
+    private IngredientsDao ingredientsDao;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public void setCategoryDao(JDBCCategoryDao categoryDao) {
+    public void setCategoryDao(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
 
@@ -102,8 +104,8 @@ public class JDBCDishDao implements DishDao {
     }
 
     @Override
-    public List<Ingredients> getIngredientsList(int dishId) {
-        List<Ingredients> listOfIngredients = new ArrayList<>();
+    public List<Ingredient> getIngredientsList(int dishId) {
+        List<Ingredient> listOfIngredients = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT INGREDIENT_ID FROM DISH_INGREDIENTS WHERE DISH_ID = ?")) {
             statement.setInt(1, dishId);
@@ -120,7 +122,7 @@ public class JDBCDishDao implements DishDao {
     private Dish createDish(ResultSet resultSet) throws SQLException {
         Dish dish = new Dish();
         int id = resultSet.getInt("dish_id");
-        dish.setDishID(id);
+        dish.setDishId(id);
         dish.setName(resultSet.getString("name"));
         Category category = categoryDao.getById(resultSet.getInt("category_id"));
         dish.setCategory(category);

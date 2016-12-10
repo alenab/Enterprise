@@ -1,10 +1,15 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Menu {
+@Entity
+@Table(name="menu")
+public class Menu implements Serializable {
+
+    private static final long serialVersionUID = 2906000748955495458L;
 
     @Id
     @Column(name = "id")
@@ -15,7 +20,9 @@ public class Menu {
     private String name;
 
     @ManyToMany
-    @JoinTable
+    @JoinTable (name = "menu_dish",
+            joinColumns = @JoinColumn(name="menu_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id"))
     private List<Dish> dishes;
 
     public int getId() {

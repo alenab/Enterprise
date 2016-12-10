@@ -2,7 +2,9 @@ package ua.goit.java.jdbc.dao;
 
 import ua.goit.java.db.Dish;
 import ua.goit.java.db.Menu;
+import ua.goit.java.db.dao.DishDao;
 import ua.goit.java.db.dao.MenuDao;
+import ua.goit.java.hibernate.dao.HDishDao;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,13 +14,13 @@ import java.util.List;
 public class JDBCMenuDao implements MenuDao {
 
     private DataSource dataSource;
-    private JDBCDishDao dishDao;
+    private DishDao dishDao;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public void setDishDao(JDBCDishDao dishDao) {
+    public void setDishDao(HDishDao dishDao) {
         this.dishDao = dishDao;
     }
 
@@ -48,7 +50,7 @@ public class JDBCMenuDao implements MenuDao {
     public List<Menu> findByName(String name) {
         List<Menu> result = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM MENU WHERE LOWER(NAME) LIKE (?)")) {
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM MENU WHERE LOWER(NAME) LIKE LOWER (?)")) {
             statement.setString(1, "%" + name + "%");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

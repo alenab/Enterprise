@@ -10,15 +10,11 @@ import java.util.List;
 public class MenuCommandHandler implements CommandHandler {
 
     private MenuDao menuDao;
-    private DishDao dishDao;
 
     public void setMenuDao(MenuDao menuDao) {
         this.menuDao = menuDao;
     }
 
-    public void setDishDao(DishDao dishDao) {
-        this.dishDao = dishDao;
-    }
 
     @Override
     public String getName() {
@@ -28,30 +24,45 @@ public class MenuCommandHandler implements CommandHandler {
     @Override
     public String handler(String... commands) {
         String command = commands[0];
+
         switch (command) {
+
             case "print": {
                 List<Menu> list = menuDao.getAll();
                 return printMenu(list);
             }
-            case "find":
-                List<Menu> list = menuDao.findByName(commands[1]);
+
+            case "find": {
+                String name = commands[1];
+
+                List<Menu> list = menuDao.findByName(name);
                 return printMenu(list);
+            }
+
             case "delete":
-                if (menuDao.delete(Integer.valueOf(commands[1])) > 0) {
+                Integer id = Integer.valueOf(commands[1]);
+
+                if (menuDao.delete(id) > 0) {
                     return "deleted successfully";
                 } else {
                     return "not deleted";
                 }
+
             case "add":
-                if (menuDao.add(commands[1]) > 0) {
+                String name = commands[1];
+
+                if (menuDao.add(name) > 0) {
                     return "added successfully";
                 } else {
                     return "not added";
                 }
-            case "add_dish":
+
+            case "add_dish": {
+                int menuId = Integer.parseInt(commands[1]);
+                int dishId = Integer.parseInt(commands[2]);
+
                 try {
-                    int dish_id = dishDao.findByName(commands[2]).get(0).getDishID();
-                    if (menuDao.addDish(Integer.parseInt(commands[1]), dish_id) > 0) {
+                    if (menuDao.addDish(menuId, dishId) > 0) {
                         return "added successfully";
                     } else {
                         return "not added";
@@ -60,8 +71,13 @@ public class MenuCommandHandler implements CommandHandler {
                     System.out.println("You enter nonexistent dish, please add this dish before and try again");
                     throw new RuntimeException();
                 }
+            }
+
             case "delete_dish":
-                if (menuDao.deleteDish(Integer.valueOf(commands[1]), dishDao.getById(Integer.valueOf(commands[2])).getDishID()) > 0) {
+                Integer menuId = Integer.valueOf(commands[1]);
+                Integer dishId = Integer.valueOf(commands[2]);
+
+                if (menuDao.deleteDish(menuId, dishId) > 0) {
                     return "deleted successfully";
                 } else {
                     return "not deleted";
@@ -83,5 +99,4 @@ public class MenuCommandHandler implements CommandHandler {
         }
         return result;
     }
-
 }

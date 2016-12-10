@@ -4,131 +4,53 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            https://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/tx
-                           http://www.springframework.org/schema/tx/spring-tx.xsd">
+                           http://www.springframework.org/schema/tx/spring-tx.xsd"
 
-    <!--<tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>-->
+       default-autowire="byName">
 
-    <bean id="application" class="ua.goit.java.Application">
-        <property name="dishCommandHandler" ref="dishCommandHandler"/>
-        <property name="employeeCommandHandler" ref="employeeCommandHandler"/>
-        <property name="kitchenCommandHandler" ref="kitchenCommandHandler"/>
-        <property name="menuCommandHandler" ref="menuCommandHandler"/>
-        <property name="orderCommandHandler" ref="orderCommandHandler"/>
-        <property name="storeCommandHandler" ref="storeCommandHandler"/>
+    <bean id="application" class="ua.goit.java.Application"/>
+    <bean id="dishCommandHandler" class="ua.goit.java.DishCommandHandler"/>
+    <bean id="employeeCommandHandler" class="ua.goit.java.EmployeeCommandHandler"/>
+    <bean id="kitchenCommandHandler" class="ua.goit.java.KitchenCommandHandler"/>
+    <bean id="menuCommandHandler" class="ua.goit.java.MenuCommandHandler"/>
+    <bean id="orderCommandHandler" class="ua.goit.java.OrderCommandHandler"/>
+    <bean id="storeCommandHandler" class="ua.goit.java.StoreCommandHandler"/>
+
+    <bean id="dishDao" class="ua.goit.java.hibernate.dao.HDishDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.CategoryDao" ref="categoryDao"/>
     </bean>
-
-    <bean id="dishCommandHandler" class="ua.goit.java.DishCommandHandler">
-        <!--<property name="txManager" ref="txManager"/>-->
-        <property name="dishDao" ref="dishDao"/>
+    <bean id="employeeDao" class="ua.goit.java.hibernate.dao.HEmployeeDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.PositionDao" ref="positionDao"/>
     </bean>
-
-    <bean id="employeeCommandHandler" class="ua.goit.java.EmployeeCommandHandler">
-        <!--<property name="txManager" ref="txManager"/>-->
-        <property name="employeeDao" ref="employeeDao"/>
+    <bean id="prepareDishDao" class="ua.goit.java.hibernate.dao.HPrepareDishDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.DishDao" ref="dishDao"/>
+        <constructor-arg type="ua.goit.java.db.dao.OrderDao" ref="orderDao"/>
+        <constructor-arg type="ua.goit.java.db.dao.EmployeeDao" ref="employeeDao"/>
     </bean>
-
-    <bean id="kitchenCommandHandler" class="ua.goit.java.KitchenCommandHandler">
-        <!--<property name="txManager" ref="txManager"/>-->
-        <property name="prepareDishDao" ref="prepareDishDao"/>
+    <bean id="menuDao" class="ua.goit.java.hibernate.dao.HMenuDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.DishDao" ref="dishDao"/>
     </bean>
-
-    <bean id="menuCommandHandler" class="ua.goit.java.MenuCommandHandler">
-        <!--<property name="txManager" ref="txManager"/>-->
-        <property name="menuDao" ref="menuDao"/>
-        <property name="dishDao" ref="dishDao"/>
+    <bean id="orderDao" class="ua.goit.java.hibernate.dao.HOrderDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.DishDao" ref="dishDao"/>
+        <constructor-arg type="ua.goit.java.db.dao.EmployeeDao" ref="employeeDao"/>
     </bean>
-
-    <bean id="orderCommandHandler" class="ua.goit.java.OrderCommandHandler">
-        <!--<property name="txManager" ref="txManager"/>-->
-        <property name="ordersDao" ref="ordersDao"/>
-        <property name="dishDao" ref="dishDao"/>
-        <property name="prepareDishDao" ref="prepareDishDao"/>
+    <bean id="storeDao" class="ua.goit.java.hibernate.dao.HStoreDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.IngredientsDao" ref="ingredientsDao"/>
     </bean>
-
-    <bean id="storeCommandHandler" class="ua.goit.java.StoreCommandHandler">
-        <!--<property name="txManager" ref="txManager"/>-->
-        <property name="storeDao" ref="storeDao"/>
-        <property name="ingredientsDao" ref="ingredientsDao"/>
-
+    <bean id="ingredientsDao" class="ua.goit.java.hibernate.dao.HIngredientDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
     </bean>
-
-    <bean id="dishDao" class="ua.goit.java.jdbc.dao.JDBCDishDao">
-        <property name="categoryDao" ref="categoryDao"/>
-        <property name="ingredientsDao" ref="ingredientsDao"/>
-        <property name="dataSource" ref="dataSource"/>
+    <bean id="positionDao" class="ua.goit.java.hibernate.dao.HPositionDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
     </bean>
-
-    <bean id="employeeDao" class="ua.goit.java.jdbc.dao.JDBCEmployeeDao">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="positionDao" ref="positionDao"/>
+    <bean id="categoryDao" class="ua.goit.java.hibernate.dao.HCategoryDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
     </bean>
-
-    <bean id="prepareDishDao" class="ua.goit.java.jdbc.dao.JDBCPrepareDishDao">
-        <property name="dishDao" ref="dishDao"/>
-        <property name="employeeDao" ref="employeeDao"/>
-        <property name="ordersDao" ref="ordersDao"/>
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="menuDao" class="ua.goit.java.jdbc.dao.JDBCMenuDao">
-        <property name="dishDao" ref="dishDao"/>
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="ordersDao" class="ua.goit.java.jdbc.dao.JDBCOrdersDao">
-        <property name="dishDao" ref="dishDao"/>
-        <property name="employeeDao" ref="employeeDao"/>
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="storeDao" class="ua.goit.java.jdbc.dao.JDBCStoreDao">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="ingredientsDao" ref="ingredientsDao"/>
-    </bean>
-
-    <bean id="ingredientsDao" class="ua.goit.java.jdbc.dao.JDBCIngredientsDao">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="positionDao" class="ua.goit.java.jdbc.dao.JDBCPositionDao">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="categoryDao" class="ua.goit.java.jdbc.dao.JDBCCategoryDao">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="${jdbc.driver.class}"/>
-        <property name="jdbcUrl" value="${jdbc.url}"/>
-        <property name="user" value="${jdbc.user}"/>
-        <property name="password" value="${jdbc.password}"/>
-        <property name="minPoolSize" value="${jdbc.min.connection}"/>
-        <property name="maxPoolSize" value="${jdbc.max.connection}"/>
-        <property name="acquireIncrement" value="${jdbc.acquire.increment}"/>
-    </bean>
-
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:jdbc.properties"/>
-    </bean>
-
-    <!--<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
-    <!--<property name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
-
-
-    <!--<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">-->
-    <!--<property name="dataSource" ref="dataSource"/>-->
-    <!--<property name="packagesToScan" value="dao.ua.goit.java.db"/>-->
-    <!--<property name="hibernateProperties">-->
-    <!--<value>-->
-    <!--hibernate.dialect=org.hibernate.dialect.PostgreSQL95Dialect-->
-    <!--</value>-->
-    <!--</property>-->
-    <!--</bean>-->
-
-    <!--<bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">-->
-    <!--<property name="sessionFactory" ref="sessionFactory"/>-->
-    <!--</bean>-->
 
 </beans>

@@ -22,10 +22,17 @@ public class KitchenCommandHandler implements CommandHandler {
     @Override
     public String handler(String... commands) {
         String command = commands[0];
+
         switch (command) {
+
             case "add":
-                if (prepareDishDao.add(Integer.parseInt(commands[1]), Integer.parseInt(commands[2]), Integer.parseInt(commands[3]),
-                        Date.valueOf(commands[4])) > 0) {
+                int dishId = Integer.parseInt(commands[1]);
+                int employeeId = Integer.parseInt(commands[2]);
+                int orderId = Integer.parseInt(commands[3]);
+                Date prepareDate = Date.valueOf(commands[4]);
+
+                if (prepareDishDao.add(dishId, employeeId, orderId,
+                        prepareDate) > 0) {
                     return "added successfully";
                 } else {
                     return "not added";

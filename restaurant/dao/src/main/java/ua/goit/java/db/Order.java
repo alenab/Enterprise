@@ -1,19 +1,22 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
-public class Orders {
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = -5434891835987681843L;
 
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
@@ -27,7 +30,7 @@ public class Orders {
     private String status;
 
     @OneToMany
-    @JoinTable
+    @JoinColumn(name = "order_id")
     private List<OrderedDish> orderedDish;
 
     public int getOrderId() {
@@ -80,7 +83,7 @@ public class Orders {
 
     @Override
     public String toString() {
-        return "Orders{" +
+        return "Order{" +
                 "orderId=" + orderId +
                 ", employee=" + employee +
                 ", tableNumber=" + tableNumber +

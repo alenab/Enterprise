@@ -2,7 +2,10 @@ package ua.goit.java;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ua.goit.java.jdbc.dao.*;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +20,10 @@ public class Application {
     private KitchenCommandHandler kitchenCommandHandler;
     private StoreCommandHandler storeCommandHandler;
 
+    private PlatformTransactionManager txManager;
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("application-context.xml", "hibernate-context.xml");
         Application application = applicationContext.getBean(Application.class);
         application.start();
 
@@ -55,8 +59,15 @@ public class Application {
                 boolean isCommandFound = false;
                 for (CommandHandler table : tableNames) {
                     if (table.getName().equals(tableName)) {
-                        System.out.println(table.handler(commandToExecute));
-                        isCommandFound = true;
+                        TransactionStatus status = txManager.getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW));
+                        try {
+                            System.out.println(table.handler(commandToExecute));
+                            isCommandFound = true;
+                            txManager.commit(status);
+                        } catch (Exception e) {
+                            txManager.rollback(status);
+                            throw e;
+                        }
                     }
                 }
                 if (!isCommandFound) {
@@ -89,5 +100,9 @@ public class Application {
 
     public void setStoreCommandHandler(StoreCommandHandler storeCommandHandler) {
         this.storeCommandHandler = storeCommandHandler;
+    }
+
+    public void setTxManager(PlatformTransactionManager txManager) {
+        this.txManager = txManager;
     }
 }

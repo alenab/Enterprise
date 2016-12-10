@@ -1,14 +1,12 @@
 package ua.goit.java.db.dao;
 
 import ua.goit.java.db.Dish;
-import ua.goit.java.db.Ingredients;
+import ua.goit.java.db.Ingredient;
 
 import java.util.List;
 
-/**
- * Created by Alena on 30.11.2016.
- */
 public interface DishDao {
+
     int add(String name, int categoryId, float price, float weight);
 
     int delete(int id);
@@ -19,5 +17,5 @@ public interface DishDao {
 
     Dish getById(int id);
 
-    List<Ingredients> getIngredientsList(int dishId);
+    List<Ingredient> getIngredientsList(int dishId);
 }

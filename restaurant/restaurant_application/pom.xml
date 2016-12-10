@@ -16,12 +16,12 @@
     <dependencies>
         <dependency>
             <groupId>ua.goit.java.alena</groupId>
-            <artifactId>restaurant_lib</artifactId>
+            <artifactId>dao</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>ua.goit.java.alena</groupId>
-            <artifactId>dao</artifactId>
+            <artifactId>hibernate_lib</artifactId>
             <version>${parent.version}</version>
         </dependency>
         <dependency>

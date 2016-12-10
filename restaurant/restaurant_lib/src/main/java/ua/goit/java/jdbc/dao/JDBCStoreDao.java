@@ -1,7 +1,8 @@
 package ua.goit.java.jdbc.dao;
 
-import ua.goit.java.db.Ingredients;
+import ua.goit.java.db.Ingredient;
 import ua.goit.java.db.Store;
+import ua.goit.java.db.dao.IngredientsDao;
 import ua.goit.java.db.dao.StoreDao;
 
 import javax.sql.DataSource;
@@ -12,7 +13,7 @@ import java.util.List;
 public class JDBCStoreDao implements StoreDao {
 
     private DataSource dataSource;
-    private JDBCIngredientsDao ingredientsDao;
+    private IngredientsDao ingredientsDao;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -92,8 +93,8 @@ public class JDBCStoreDao implements StoreDao {
     private Store createStore(ResultSet resultSet) throws SQLException {
         Store store = new Store();
         store.setId(resultSet.getInt("id"));
-        Ingredients ingredients = ingredientsDao.getById(resultSet.getInt("ingredient_id"));
-        store.setIngredient(ingredients);
+        Ingredient ingredient = ingredientsDao.getById(resultSet.getInt("ingredient_id"));
+        store.setIngredient(ingredient);
         store.setQuantity(resultSet.getFloat("quantity"));
         return store;
     }

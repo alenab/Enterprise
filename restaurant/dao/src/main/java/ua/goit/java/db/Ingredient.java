@@ -1,10 +1,13 @@
 package ua.goit.java.db;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "ingredients")
-public class Ingredients {
+public class Ingredient implements Serializable {
+
+    private static final long serialVersionUID = 8236435786982841655L;
 
     @Id
     @Column(name = "id")
@@ -43,7 +46,7 @@ public class Ingredients {
 
     @Override
     public String toString() {
-        return "Ingredients{" +
+        return "Ingredient{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", measurement='" + measurement + '\'' +

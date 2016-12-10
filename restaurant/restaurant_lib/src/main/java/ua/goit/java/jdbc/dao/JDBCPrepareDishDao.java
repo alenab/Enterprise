@@ -2,9 +2,13 @@ package ua.goit.java.jdbc.dao;
 
 import ua.goit.java.db.Dish;
 import ua.goit.java.db.Employee;
-import ua.goit.java.db.Orders;
+import ua.goit.java.db.Order;
 import ua.goit.java.db.PrepareDish;
+import ua.goit.java.db.dao.DishDao;
+import ua.goit.java.db.dao.EmployeeDao;
+import ua.goit.java.db.dao.OrderDao;
 import ua.goit.java.db.dao.PrepareDishDao;
+import ua.goit.java.hibernate.dao.HDishDao;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -14,15 +18,15 @@ import java.util.List;
 public class JDBCPrepareDishDao implements PrepareDishDao {
 
     private DataSource dataSource;
-    private JDBCDishDao dishDao;
-    private JDBCEmployeeDao employeeDao;
-    private JDBCOrdersDao ordersDao;
+    private DishDao dishDao;
+    private EmployeeDao employeeDao;
+    private OrderDao ordersDao;
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    public void setDishDao(JDBCDishDao dishDao) {
+    public void setDishDao(HDishDao dishDao) {
         this.dishDao = dishDao;
     }
 
@@ -30,7 +34,7 @@ public class JDBCPrepareDishDao implements PrepareDishDao {
         this.employeeDao = employeeDao;
     }
 
-    public void setOrdersDao(JDBCOrdersDao ordersDao) {
+    public void setOrdersDao(JDBCOrderDao ordersDao) {
         this.ordersDao = ordersDao;
     }
 
@@ -67,15 +71,15 @@ public class JDBCPrepareDishDao implements PrepareDishDao {
     }
 
     @Override
-    public List<Dish> getByOrderId(int orderId) {
-        List<Dish> result = new ArrayList<>();
+    public List<PrepareDish> getByOrderId(int orderId) {
+        List<PrepareDish> result = new ArrayList<>();
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM PREPARE_DISH WHERE ORDER_ID = ?")) {
             statement.setInt(1, orderId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 PrepareDish prepareDish = createPrepareDish(resultSet);
-                result.add(prepareDish.getDish());
+                result.add(prepareDish);
             }
             return result;
         } catch (SQLException e) {
@@ -90,8 +94,8 @@ public class JDBCPrepareDishDao implements PrepareDishDao {
         prepareDish.setDish(dish);
         Employee employee = employeeDao.getById(resultSet.getInt("employee_id"));
         prepareDish.setEmployee(employee);
-        Orders orders = ordersDao.getById(resultSet.getInt("order_id"));
-        prepareDish.setOrder(orders);
+        Order order = ordersDao.getById(resultSet.getInt("order_id"));
+        prepareDish.setOrder(order);
         prepareDish.setPrepareDate(resultSet.getDate("prepare_date").toLocalDate());
         return prepareDish;
     }
