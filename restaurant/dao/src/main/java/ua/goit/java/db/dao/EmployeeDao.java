@@ -7,9 +7,13 @@ import java.util.List;
 
 public interface EmployeeDao {
 
-    int add(String surname, String name, Date birthday, String phoneNumber, int positionId, float salary);
+    int addEmployee(String surname, String name, Date birthday, String phoneNumber, int positionId, float salary);
 
-    int delete(int id);
+    int addWaiter (String surname, String name, Date birthday, String phoneNumber, float salary);
+
+    int addCook (String surname, String name, Date birthday, String phoneNumber, float salary);
+
+    void delete(int id);
 
     List<Employee> findByName(String name);
 

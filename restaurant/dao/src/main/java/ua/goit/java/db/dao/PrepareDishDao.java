@@ -1,5 +1,6 @@
 package ua.goit.java.db.dao;
 
+import ua.goit.java.db.Dish;
 import ua.goit.java.db.PrepareDish;
 
 import java.sql.Date;
@@ -12,4 +13,6 @@ public interface PrepareDishDao {
     List<PrepareDish> getAll();
 
     List<PrepareDish> getByOrderId(int orderId);
+
+    List<Dish> needToPrepare();
 }

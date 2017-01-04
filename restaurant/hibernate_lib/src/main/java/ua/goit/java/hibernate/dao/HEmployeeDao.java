@@ -4,7 +4,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.transaction.annotation.Transactional;
+import ua.goit.java.db.Cook;
 import ua.goit.java.db.Employee;
+import ua.goit.java.db.Position;
+import ua.goit.java.db.Waiter;
 import ua.goit.java.db.dao.EmployeeDao;
 import ua.goit.java.db.dao.PositionDao;
 
@@ -22,25 +25,46 @@ public class HEmployeeDao implements EmployeeDao {
     }
 
     @Transactional
-    @Override
-    public int add(String surname, String name, Date birthday, String phoneNumber, int positionId, float salary) {
-        Employee employee = new Employee();
+    private void add(Employee employee, String surname, String name, Date birthday, String phoneNumber, float salary) {
         employee.setSurname(surname);
         employee.setName(name);
         employee.setBirthday(birthday.toLocalDate());
         employee.setPhoneNumber(phoneNumber);
-        employee.setPosition(positionDao.getById(positionId));
         employee.setSalary(salary);
-        return (int) sessionFactory.getCurrentSession().save(employee);
     }
 
     @Transactional
     @Override
-    public int delete(int id) {
+    public int addEmployee(String surname, String name, Date birthday, String phoneNumber, int positionId, float salary) {
+        Employee employee = new Employee();
+        add(employee, surname, name, birthday, phoneNumber, salary);
+        employee.setPosition(positionDao.getById(positionId));
+        return (int) sessionFactory.getCurrentSession().save(employee);
+    }
+
+    @Transactional
+    public int addWaiter(String surname, String name, Date birthday, String phoneNumber, float salary) {
+        Waiter waiter = new Waiter();
+        add(waiter, surname, name, birthday, phoneNumber, salary);
+        waiter.setPosition(positionDao.findByName("waiter"));
+        return (int) sessionFactory.getCurrentSession().save(waiter);
+    }
+
+    @Override
+    public int addCook(String surname, String name, Date birthday, String phoneNumber, float salary) {
+        Cook cook = new Cook();
+        add(cook, surname, name, birthday, phoneNumber, salary);
+        cook.setPosition(positionDao.findByName("cook"));
+        return (int) sessionFactory.getCurrentSession().save(cook);
+    }
+
+    @Transactional
+    @Override
+    public void delete(int id) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from Employee where id = :id");
         query.setParameter("id", id);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     @Transactional

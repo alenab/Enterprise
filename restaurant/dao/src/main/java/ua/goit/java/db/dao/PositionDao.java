@@ -8,9 +8,11 @@ public interface PositionDao {
 
     int add(String name);
 
-    int delete(int id);
+    void delete(int id);
 
     Position getById(int id);
 
     List<Position> getAll();
+
+    Position findByName(String name);
 }

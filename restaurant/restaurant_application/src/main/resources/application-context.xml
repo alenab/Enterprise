@@ -29,6 +29,7 @@
         <constructor-arg type="ua.goit.java.db.dao.DishDao" ref="dishDao"/>
         <constructor-arg type="ua.goit.java.db.dao.OrderDao" ref="orderDao"/>
         <constructor-arg type="ua.goit.java.db.dao.EmployeeDao" ref="employeeDao"/>
+        <constructor-arg type="ua.goit.java.db.dao.StoreDao" ref="storeDao"/>
     </bean>
     <bean id="menuDao" class="ua.goit.java.hibernate.dao.HMenuDao">
         <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>

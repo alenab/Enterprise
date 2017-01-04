@@ -32,7 +32,7 @@ public class StoreCommandHandler implements CommandHandler {
         String command = commands[0];
         switch (command) {
 
-            case "add": {
+            case "addEmployee": {
                 String name = commands[1];
                 String measurement = commands[2];
                 float quantity = Float.parseFloat(commands[3]);
@@ -50,9 +50,10 @@ public class StoreCommandHandler implements CommandHandler {
             case "delete": {
                 int id = Integer.parseInt(commands[1]);
 
-                if (storeDao.delete(id) > 0) {
+                try {
+                    storeDao.delete(id);
                     return "deleted successfully";
-                } else {
+                } catch (Exception e) {
                     return "not deleted";
                 }
             }

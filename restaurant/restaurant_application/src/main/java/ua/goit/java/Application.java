@@ -39,9 +39,9 @@ public class Application {
 
         System.out.println("Please, enter a command from the command set and press 'enter': \n\n" +
                 "employee print - to show a list of employees \nemployee find 'employee_name'- to find employee by name\n" +
-                "employee add 'surname, name, birthday 'yyyy-mm-dd', phoneNumber,positionId, salary' - to add an employee \n" +
+                "employee addEmployee 'surname, name, birthday 'yyyy-mm-dd', phoneNumber,positionId, salary' - to addEmployee an employee \n" +
                 "employee delete 'id_of_employee' - to delete an employee  \n\ndish print - to show a list of dishes\n" +
-                "dish find 'dish_name'- to find dish by name\ndish add 'dish_name category_id price weight' - to add dish\n" +
+                "dish find 'dish_name'- to find dish by name\ndish addEmployee 'dish_name category_id price weight' - to addEmployee dish\n" +
                 "dish delete 'dish_id'- to deleteDish dish\n... \n stop - to exit");
         String command;
         String tableName;

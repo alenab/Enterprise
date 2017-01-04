@@ -31,11 +31,11 @@ public class HCategoryDao implements CategoryDao {
 
     @Transactional
     @Override
-    public int delete(int id) {
+    public void delete(int id) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from Category where id = :id");
         query.setParameter("id", id);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     @Transactional

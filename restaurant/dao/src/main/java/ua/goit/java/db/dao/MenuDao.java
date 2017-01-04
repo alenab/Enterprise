@@ -9,7 +9,7 @@ public interface MenuDao {
 
     int add(String name);
 
-    int delete(int id);
+    void delete(int id);
 
     List<Menu> findByName(String name);
 
@@ -17,7 +17,7 @@ public interface MenuDao {
 
     int addDish(int menuId, int dishId);
 
-    int deleteDish(int menuId, int dishId);
+    void deleteDish(int menuId, int dishId);
 
     List<Dish> getDishesList(int menuId);
 }

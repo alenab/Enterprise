@@ -1,5 +1,6 @@
 package ua.goit.java;
 
+import ua.goit.java.db.Dish;
 import ua.goit.java.db.PrepareDish;
 import ua.goit.java.db.dao.PrepareDishDao;
 
@@ -25,7 +26,18 @@ public class KitchenCommandHandler implements CommandHandler {
 
         switch (command) {
 
-            case "add":
+            case "need_prepare": {
+                List<Dish> list = prepareDishDao.needToPrepare();
+                String result = "";
+                System.out.println(String.format("|| %5s | %15s |\n", "id", "dish"));
+                for (Dish dish : list) {
+                    result += String.format("|| %5d | %15s |\n", dish.getDishId(),
+                            dish.getName());
+                }
+                return result;
+            }
+
+            case "prepare":
                 int dishId = Integer.parseInt(commands[1]);
                 int employeeId = Integer.parseInt(commands[2]);
                 int orderId = Integer.parseInt(commands[3]);
@@ -35,13 +47,18 @@ public class KitchenCommandHandler implements CommandHandler {
                         prepareDate) > 0) {
                     return "added successfully";
                 } else {
-                    return "not added";
+                    if (prepareDishDao.add(dishId, employeeId, orderId,
+                            prepareDate) == 0) {
+                        return "not added, there are no enough ingredients on the store";
+                    } else {
+                        return "not added";
+                    }
                 }
 
             case "print":
                 List<PrepareDish> list = prepareDishDao.getAll();
                 String result = "";
-                System.out.println( String.format("|| %5s | %15s | %15s | %5s | %20s\n", "id", "dish",
+                System.out.println(String.format("|| %5s | %15s | %15s | %5s | %20s\n", "id", "dish",
                         "employee", "order_id", "date"));
                 for (PrepareDish prepareDish : list) {
                     result += String.format("|| %5d | %15s | %15s | %5d | %20s\n", prepareDish.getId(),

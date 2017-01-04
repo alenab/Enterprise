@@ -39,13 +39,14 @@ public class EmployeeCommandHandler implements CommandHandler {
             case "delete":
                 Integer id = Integer.valueOf(commands[1]);
 
-                if (employeeDao.delete(id) > 0) {
+                try {
+                    employeeDao.delete(id);
                     return "deleted successfully";
-                } else {
+                } catch (Exception e) {
                     return "not deleted";
                 }
 
-            case "add":
+            case "add_employee": {
                 String surname = commands[1];
                 String name = commands[2];
                 Date birthday = Date.valueOf(commands[3]);
@@ -53,8 +54,34 @@ public class EmployeeCommandHandler implements CommandHandler {
                 int positionId = Integer.parseInt(commands[5]);
                 int salary = Integer.parseInt(commands[6]);
 
-                if (employeeDao.add(surname, name, birthday, phoneNumber,
+                if (employeeDao.addEmployee(surname, name, birthday, phoneNumber,
                         positionId, salary) > 0) {
+                    return "added successfully";
+                } else {
+                    return "not added";
+                }
+            }
+            case "add_waiter": {
+                String surname = commands[1];
+                String name = commands[2];
+                Date birthday = Date.valueOf(commands[3]);
+                String phoneNumber = commands[4];
+                int salary = Integer.parseInt(commands[5]);
+
+                if (employeeDao.addWaiter(surname, name, birthday, phoneNumber, salary) > 0) {
+                    return "added successfully";
+                } else {
+                    return "not added";
+                }
+            }
+            case "add_cook":
+                String surname = commands[1];
+                String name = commands[2];
+                Date birthday = Date.valueOf(commands[3]);
+                String phoneNumber = commands[4];
+                int salary = Integer.parseInt(commands[5]);
+
+                if (employeeDao.addCook(surname, name, birthday, phoneNumber, salary) > 0) {
                     return "added successfully";
                 } else {
                     return "not added";
@@ -65,7 +92,7 @@ public class EmployeeCommandHandler implements CommandHandler {
 
     private String printEmployee(List<Employee> list) {
         String result = "";
-        System.out.println( String.format("|| %5s | %15s | %15s | %15s | %20s | %15s | %10s\n", "id", "surname",
+        System.out.println(String.format("|| %5s | %15s | %15s | %15s | %20s | %15s | %10s\n", "id", "surname",
                 "name", "birthday", "phone_number", "position", "salary"));
         for (Employee employee : list) {
             result += String.format("|| %5d | %15s | %15s | %15s | %20s | %15s | %10.2f\n",

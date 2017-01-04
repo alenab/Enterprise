@@ -8,7 +8,7 @@ public interface StoreDao {
 
     int add(int ingredientId, float quantity);
 
-    int delete(int id);
+    void delete(int id);
 
     Store findByIngredientId(int ingredientId);
 

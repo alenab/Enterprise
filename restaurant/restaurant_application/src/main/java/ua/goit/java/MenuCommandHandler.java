@@ -42,13 +42,15 @@ public class MenuCommandHandler implements CommandHandler {
             case "delete":
                 Integer id = Integer.valueOf(commands[1]);
 
-                if (menuDao.delete(id) > 0) {
+                try {
+                    menuDao.delete(id);
                     return "deleted successfully";
-                } else {
-                    return "not deleted";
+                } catch (Exception e){
+                    System.out.println( "not deleted");
+                    throw new RuntimeException();
                 }
 
-            case "add":
+            case "addEmployee":
                 String name = commands[1];
 
                 if (menuDao.add(name) > 0) {
@@ -68,7 +70,7 @@ public class MenuCommandHandler implements CommandHandler {
                         return "not added";
                     }
                 } catch (IndexOutOfBoundsException e) {
-                    System.out.println("You enter nonexistent dish, please add this dish before and try again");
+                    System.out.println("You enter nonexistent dish, please addEmployee this dish before and try again");
                     throw new RuntimeException();
                 }
             }
@@ -77,10 +79,12 @@ public class MenuCommandHandler implements CommandHandler {
                 Integer menuId = Integer.valueOf(commands[1]);
                 Integer dishId = Integer.valueOf(commands[2]);
 
-                if (menuDao.deleteDish(menuId, dishId) > 0) {
+                try {
+                    menuDao.deleteDish(menuId, dishId);
                     return "deleted successfully";
-                } else {
-                    return "not deleted";
+                } catch (Exception e) {
+                    System.out.println("not deleted");
+                    throw new RuntimeException(e);
                 }
 
         }

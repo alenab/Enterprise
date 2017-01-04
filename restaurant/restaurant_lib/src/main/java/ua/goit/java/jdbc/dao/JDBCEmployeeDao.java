@@ -24,7 +24,7 @@ public class JDBCEmployeeDao implements EmployeeDao {
     }
 
     @Override
-    public int add(String surname, String name, Date birthday, String phoneNumber, int positionId, float salary) {
+    public int addEmployee(String surname, String name, Date birthday, String phoneNumber, int positionId, float salary) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement("INSERT INTO EMPLOYEE VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)")) {
             statement.setString(1, surname);

@@ -35,11 +35,11 @@ public class HDishDao implements DishDao {
 
     @Transactional
     @Override
-    public int delete(int id) {
+    public void delete(int id) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from Dish where dishId = :id");
         query.setParameter("id", id);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.transaction.annotation.Transactional;
+import ua.goit.java.db.Employee;
 import ua.goit.java.db.Position;
 import ua.goit.java.db.dao.PositionDao;
 
@@ -30,11 +31,11 @@ public class HPositionDao implements PositionDao {
 
     @Transactional
     @Override
-    public int delete(int id) {
+    public void delete(int id) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from Position where id = :id");
         query.setParameter("id", id);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     @Transactional
@@ -53,6 +54,14 @@ public class HPositionDao implements PositionDao {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select p from Position p", Position.class).list();
 
+    }
+
+    @Override
+    public Position findByName(String name) {
+        Query<Position> query = sessionFactory.getCurrentSession().createQuery("select p from Position p where " +
+                "p.name = :name", Position.class);
+        query.setParameter("name", name);
+        return query.uniqueResult();
     }
 
 }

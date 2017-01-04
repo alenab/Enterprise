@@ -8,7 +8,7 @@ public interface CategoryDao {
 
     int add(String name);
 
-    int delete(int id);
+    void delete(int id);
 
     Category getById(int id);
 

@@ -58,7 +58,7 @@ public class OrderCommandHandler implements CommandHandler {
                     }
                     return "added successfully";
                 } else {
-                    System.out.println(String.format("Order %d is closed, you cannot add dish", orderId));
+                    System.out.println(String.format("Order %d is closed, you cannot addEmployee dish", orderId));
                 }
             }
 

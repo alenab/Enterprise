@@ -31,13 +31,11 @@ public class HMenuDao implements MenuDao {
 
     @Transactional
     @Override
-    public int delete(int id) {
+    public void delete(int id) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from Menu where id = :id");
         query.setParameter("id", id);
-        int result = query.executeUpdate();
-        System.out.println(result);
-        return result;
+        query.executeUpdate();
     }
 
     @Transactional
@@ -76,12 +74,11 @@ public class HMenuDao implements MenuDao {
 
     @Transactional
     @Override
-    public int deleteDish(int menuId, int dishId) {
+    public void deleteDish(int menuId, int dishId) {
         Menu menu = getById(menuId);
         Dish dish = dishDao.getById(dishId);
         menu.getDishes().remove(dish);
         sessionFactory.getCurrentSession().save(menu);
-        return 1;
     }
 
     @Transactional

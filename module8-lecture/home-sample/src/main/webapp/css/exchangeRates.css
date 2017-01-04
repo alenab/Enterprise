@@ -1,0 +1,43 @@
+h1 {
+    size: 10px;
+    text-align: center;
+    color: slategray;
+}
+
+table {
+    width: 80%;
+    text-align: center;
+    margin: auto;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th {
+    background-color: cornflowerblue;
+}
+
+tr:hover {
+    background-color: darkgrey;
+}
+
+.form-block {
+    background-color: cornflowerblue;
+    display: table;
+    width: 100%;
+
+}
+
+.right-block {
+    text-align: right;
+}
+
+.left-block, .right-block {
+    margin: auto;
+    display: table-cell;
+}
+
+#bank {
+    color: #840320;
+}

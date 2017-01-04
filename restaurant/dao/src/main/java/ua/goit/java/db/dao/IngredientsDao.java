@@ -8,7 +8,7 @@ public interface IngredientsDao {
 
     int add(String name, String measurement);
 
-    int delete(int id);
+    void delete(int id);
 
     Ingredient getById(int id);
 

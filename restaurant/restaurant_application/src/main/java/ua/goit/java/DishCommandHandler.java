@@ -37,12 +37,13 @@ public class DishCommandHandler implements CommandHandler {
             }
             case "delete":
                 Integer id = Integer.valueOf(commands[1]);
-                if (dishDao.delete(id) > 0) {
+                try {
+                    dishDao.delete(id);
                     return "deleted successfully";
-                } else {
+                } catch (Exception e) {
                     return "not deleted";
                 }
-            case "add":
+            case "addEmployee":
                 String name = commands[1];
                 int categoryId = Integer.parseInt(commands[2]);
                 float price = Float.parseFloat(commands[3]);

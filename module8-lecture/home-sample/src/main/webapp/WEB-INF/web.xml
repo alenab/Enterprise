@@ -1,0 +1,73 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+    <display-name>Archetype Created Web Application</display-name>
+    <session-config>
+        <session-timeout>2</session-timeout>
+    </session-config>
+    <servlet>
+        <servlet-name>AddItem</servlet-name>
+        <servlet-class>ua.sample.list.AddItemServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddItem</servlet-name>
+        <url-pattern>/list/add</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ListJSP</servlet-name>
+        <jsp-file>/list/list.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ListJSP</servlet-name>
+        <url-pattern>/list</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteItem</servlet-name>
+        <servlet-class>ua.sample.list.DeleteItemServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteItem</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateStatus</servlet-name>
+        <servlet-class>ua.sample.list.UpdateStatusServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateStatus</servlet-name>
+        <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>ServletRates</servlet-name>-->
+        <!--<servlet-class>ua.sample.currencies.Servlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>ServletRates</servlet-name>-->
+        <!--<url-pattern>/</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>default</servlet-name>-->
+        <!--<url-pattern>/css/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>default</servlet-name>-->
+        <!--<url-pattern>/fonts/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+    <!--<listener>-->
+        <!--<listener-class>ua.sample.currencies.BackgroundJobManager</listener-class>-->
+    <!--</listener>-->
+    <!--<filter>-->
+        <!--<filter-name>JsonServletFilter</filter-name>-->
+        <!--<filter-class>ua.sample.currencies.SaveJsonFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>JsonServletFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+</web-app>

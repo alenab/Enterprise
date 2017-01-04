@@ -9,7 +9,7 @@ public interface DishDao {
 
     int add(String name, int categoryId, float price, float weight);
 
-    int delete(int id);
+    void delete(int id);
 
     List<Dish> findByName(String name);
 

@@ -41,11 +41,11 @@ public class HOrderDao implements OrderDao {
 
     @Transactional
     @Override
-    public int delete(int id) {
+    public void delete(int id) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("delete from Order o where o.orderId = :id");
         query.setParameter("id", id);
-        return query.executeUpdate();
+        query.executeUpdate();
     }
 
     @Transactional
@@ -87,7 +87,7 @@ public class HOrderDao implements OrderDao {
 
     @Transactional
     @Override
-    public int deleteDish(int orderId, int dishId) {
+    public void deleteDish(int orderId, int dishId) {
         Order order = getById(orderId);
 
         Dish dish = dishDao.getById(dishId);
@@ -98,7 +98,6 @@ public class HOrderDao implements OrderDao {
                 break;
             }
         }
-        return 1;
     }
 
     @Transactional

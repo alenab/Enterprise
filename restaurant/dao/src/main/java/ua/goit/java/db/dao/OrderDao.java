@@ -11,7 +11,7 @@ public interface OrderDao {
 
     int add(int employeeId, int tableNumber, Date orderDate);
 
-    int delete(int id);
+    void delete(int id);
 
     List<Order> getAll();
 
@@ -21,7 +21,7 @@ public interface OrderDao {
 
     int addDish(int orderId, int dishId, int amountDish);
 
-    int deleteDish(int orderId, int dishId);
+    void deleteDish(int orderId, int dishId);
 
     List<OrderedDish> getOrderedDishesByOrderId(int id);
 
