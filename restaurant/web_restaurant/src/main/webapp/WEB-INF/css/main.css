@@ -1,0 +1,25 @@
+.brand {
+    margin-top: 20pt;
+    display: inline;
+}
+
+a:hover, a, a:visited {
+    color: black;
+    text-decoration: underline;
+}
+
+h1.h1, h3.h3 {
+    color: #8e0117;
+}
+
+h3 {
+    text-align: center;
+}
+
+td, th {
+    border: none !important;
+}
+
+tr.find {
+    text-align: right !important;
+}

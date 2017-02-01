@@ -1,5 +1,7 @@
 package ua.goit.java.db;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -18,10 +20,12 @@ public class OrderedDish implements Serializable{
     @JoinColumn(name="order_id")
     private Order order;
 
+    @JsonView(Views.Orders.class)
     @OneToOne
     @JoinColumn(name="dish_id")
     private Dish dish;
 
+    @JsonView(Views.Orders.class)
     @Column(name="amount_dish")
     private int quantity;
 

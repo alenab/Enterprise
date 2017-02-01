@@ -1,5 +1,7 @@
 package ua.goit.java.db;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -11,6 +13,7 @@ public class Order implements Serializable {
 
     private static final long serialVersionUID = -5434891835987681843L;
 
+    @JsonView(Views.Orders.class)
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +29,11 @@ public class Order implements Serializable {
     @Column(name = "orders_date")
     private LocalDate ordersDate;
 
+    @JsonView(Views.Orders.class)
     @Column(name = "status")
     private String status;
 
+    @JsonView(Views.Orders.class)
     @OneToMany
     @JoinColumn(name = "order_id")
     private List<OrderedDish> orderedDish;

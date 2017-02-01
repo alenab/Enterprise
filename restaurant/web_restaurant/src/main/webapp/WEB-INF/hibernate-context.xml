@@ -1,0 +1,80 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           https://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <tx:annotation-driven transaction-manager="txManager" proxy-target-class="true"/>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc.properties"/>
+    </bean>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver.class}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan">
+            <list>
+                <value>ua.goit.java.db</value>
+                <value>ua.goit.java.hibernate.dao</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <value>
+                hibernate.dialect=org.hibernate.dialect.PostgreSQL95Dialect
+            </value>
+        </property>
+    </bean>
+
+    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- DAO Beans -->
+    <bean id="dishDao" class="ua.goit.java.hibernate.dao.HDishDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.CategoryDao" ref="categoryDao"/>
+    </bean>
+    <bean id="employeeDao" class="ua.goit.java.hibernate.dao.HEmployeeDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.PositionDao" ref="positionDao"/>
+    </bean>
+    <bean id="prepareDishDao" class="ua.goit.java.hibernate.dao.HPrepareDishDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.DishDao" ref="dishDao"/>
+        <constructor-arg type="ua.goit.java.db.dao.OrderDao" ref="orderDao"/>
+        <constructor-arg type="ua.goit.java.db.dao.EmployeeDao" ref="employeeDao"/>
+        <constructor-arg type="ua.goit.java.db.dao.StoreDao" ref="storeDao"/>
+    </bean>
+    <bean id="menuDao" class="ua.goit.java.hibernate.dao.HMenuDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.DishDao" ref="dishDao"/>
+    </bean>
+    <bean id="orderDao" class="ua.goit.java.hibernate.dao.HOrderDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.DishDao" ref="dishDao"/>
+        <constructor-arg type="ua.goit.java.db.dao.EmployeeDao" ref="employeeDao"/>
+    </bean>
+    <bean id="storeDao" class="ua.goit.java.hibernate.dao.HStoreDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+        <constructor-arg type="ua.goit.java.db.dao.IngredientsDao" ref="ingredientsDao"/>
+    </bean>
+    <bean id="ingredientsDao" class="ua.goit.java.hibernate.dao.HIngredientDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="positionDao" class="ua.goit.java.hibernate.dao.HPositionDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="categoryDao" class="ua.goit.java.hibernate.dao.HCategoryDao">
+        <constructor-arg type="org.hibernate.SessionFactory" ref="sessionFactory"/>
+    </bean>
+
+</beans>

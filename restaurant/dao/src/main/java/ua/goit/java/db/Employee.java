@@ -1,5 +1,7 @@
 package ua.goit.java.db;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -16,9 +18,11 @@ public class Employee implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonView(Views.Employees.class)
     @Column(name = "surname")
     private String surname;
 
+    @JsonView(Views.Employees.class)
     @Column(name = "name")
     private String name;
 

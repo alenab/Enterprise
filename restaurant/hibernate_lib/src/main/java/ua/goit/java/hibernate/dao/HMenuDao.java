@@ -55,7 +55,7 @@ public class HMenuDao implements MenuDao {
     }
 
     @Transactional
-    private Menu getById(int id) {
+    public Menu getById(int id) {
         Query<Menu> query = sessionFactory.getCurrentSession().createQuery("select m from Menu m" +
                 " where m.id = :id", Menu.class);
         query.setParameter("id", id);

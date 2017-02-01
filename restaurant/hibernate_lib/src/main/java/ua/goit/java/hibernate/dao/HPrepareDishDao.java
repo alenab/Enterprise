@@ -1,6 +1,5 @@
 package ua.goit.java.hibernate.dao;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

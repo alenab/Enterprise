@@ -1,5 +1,6 @@
 package ua.goit.java.hibernate.dao;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -48,11 +49,31 @@ public class HOrderDao implements OrderDao {
         query.executeUpdate();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Order> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select o from Order o", Order.class).list();
+        List<Order> list = session.createQuery("select o from Order o", Order.class).getResultList();
+        list.forEach(order -> Hibernate.initialize(order.getOrderedDish()));
+        return list;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Order> getOpen() {
+        Session session = sessionFactory.getCurrentSession();
+        List<Order> list = session.createQuery("select o from Order o where o.status='open'", Order.class).getResultList();
+        list.forEach(order -> Hibernate.initialize(order.getOrderedDish()));
+        return list;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Order> getClosed() {
+        Session session = sessionFactory.getCurrentSession();
+        List<Order> list = session.createQuery("select o from Order o where o.status='close'", Order.class).getResultList();
+        list.forEach(order -> Hibernate.initialize(order.getOrderedDish()));
+        return list;
     }
 
     @Transactional
@@ -61,6 +82,7 @@ public class HOrderDao implements OrderDao {
         Query<Order> query = sessionFactory.getCurrentSession().createQuery("select o from Order o" +
                 " where o.orderId = :id", Order.class);
         query.setParameter("id", id);
+        Hibernate.initialize(query.uniqueResult().getOrderedDish());
         return query.uniqueResult();
 
     }

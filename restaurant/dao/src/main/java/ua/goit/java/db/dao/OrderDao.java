@@ -15,6 +15,10 @@ public interface OrderDao {
 
     List<Order> getAll();
 
+    List<Order> getOpen();
+
+    List<Order> getClosed();
+
     Order getById(int id);
 
     void setClose(int id);

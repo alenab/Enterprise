@@ -20,4 +20,6 @@ public interface MenuDao {
     void deleteDish(int menuId, int dishId);
 
     List<Dish> getDishesList(int menuId);
+
+    Menu getById(int id);
 }

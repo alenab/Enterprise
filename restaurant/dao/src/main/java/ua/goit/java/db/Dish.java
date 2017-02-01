@@ -1,5 +1,7 @@
 package ua.goit.java.db;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -16,8 +18,9 @@ public class Dish implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int dishId;
 
+    @JsonView({Views.DishesInMenu.class, Views.Orders.class})
     @Column(name = "name")
-    private String name;
+    String name;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -29,7 +32,7 @@ public class Dish implements Serializable {
     @Column(name = "weight")
     private float weight;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "dish_ingredients",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id"))

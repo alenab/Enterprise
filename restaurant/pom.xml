@@ -10,13 +10,14 @@
     <packaging>pom</packaging>
 
     <properties>
-        <spring.version>4.2.5.RELEASE</spring.version>
-        <hibernate.version>5.2.4.Final</hibernate.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring.version>4.3.5.RELEASE</spring.version>
+        <hibernate.version>5.2.5.Final</hibernate.version>
     </properties>
 
     <modules>
-        <module>restaurant_application</module>
-        <module>restaurant_lib</module>
+        <!--<module>restaurant_application</module>-->
+        <module>web_restaurant</module>
         <module>dao</module>
         <module>hibernate_lib</module>
     </modules>
@@ -70,26 +71,26 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>4.3.3.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>4.3.3.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>4.3.3.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>4.3.3.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
+                <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
@@ -97,7 +98,16 @@
                 <artifactId>c3p0</artifactId>
                 <version>0.9.5.2</version>
             </dependency>
-
+            <dependency>
+                <groupId>jstl</groupId>
+                <artifactId>jstl</artifactId>
+                <version>1.2</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.8.6</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 </project>

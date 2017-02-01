@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="brand">
+            <br>
+            <img src="/images/name.png">
+        </div>
+        <h1 class="h1">Address, tel,
+            <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>e-mail
+        </h1>
+    </div>
+    <div class="col-md-6>">
+        <h3 class="h3"><a href="/">Main page</a>
+            <a href="/employees">Our waiters</a>
+            <a href="/scheme">Our scheme</a>
+            <a href="/contacts">Our contacts</a>
+        </h3>
+    </div>
+</div>
